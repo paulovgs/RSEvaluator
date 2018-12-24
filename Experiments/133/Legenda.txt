@@ -1,0 +1,10 @@
+Fator: T_WORKLOAD
+    Fator Composto null
+
+Fator: T_ALTERNATIVE_RECOMMENDATION
+Composto: 
+Fator: T_CANDIDATES_SIZE
+    Fator Composto null
+
+A: T_WORKLOAD
+B: T_ALTERNATIVE_RECOMMENDATION
