@@ -1,2 +1,2 @@
 # RSEvaluator
-Recommender Systems Evaluator
+Recommender Systems Evaluator (more details will be provided soon...)
