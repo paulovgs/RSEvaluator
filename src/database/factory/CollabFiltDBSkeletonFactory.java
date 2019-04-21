@@ -2,7 +2,6 @@ package database.factory;
 
 import static utils.Config.CF_CLASS;
 import static utils.Config.DB_NAME;
-import app.Test;
 import database.skeleton.CollabFiltDBSkeleton;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +25,7 @@ public abstract class CollabFiltDBSkeletonFactory {
             
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
            
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CollabFiltDBSkeletonFactory.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Can't get CollabFiltDBSkeletonFactory class");
             
         }   

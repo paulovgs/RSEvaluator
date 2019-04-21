@@ -1,6 +1,5 @@
 package reports;
 
-import app.Test;
 import database.Evaluation;
 import java.awt.Color;
 import java.awt.Font;
@@ -201,7 +200,7 @@ public class BarChart extends ApplicationFrame{
                                 
         }catch (SQLException ex) {
             System.err.println("ERROR: Can't generate bar chart of "+title);
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BarChart.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
@@ -218,7 +217,7 @@ public class BarChart extends ApplicationFrame{
                 
         }catch (SQLException ex) {
             System.err.println("ERROR: Can't generate bar chart of "+title);
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BarChart.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }

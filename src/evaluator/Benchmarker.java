@@ -1,6 +1,5 @@
 package evaluator;
 
-import app.Test;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import database.Evaluation;
@@ -467,7 +466,7 @@ public class Benchmarker {
                 
             
             }catch(SQLException ex){
-                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Benchmarker.class.getName()).log(Level.SEVERE, null, ex);
             }
         
         }
@@ -646,7 +645,7 @@ public class Benchmarker {
                 
             
             }catch(SQLException ex){
-                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Benchmarker.class.getName()).log(Level.SEVERE, null, ex);
             }
         
         }
@@ -670,7 +669,7 @@ public class Benchmarker {
             evaluation.saveExperiment(evaluation_id, exp_id, rv_id, mean, std_dev, conf_int);
             
         } catch (SQLException ex) {
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Benchmarker.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
@@ -807,7 +806,7 @@ public class Benchmarker {
                         saveFactor(f);
 
         }catch (SQLException ex) {
-             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+             Logger.getLogger(Benchmarker.class.getName()).log(Level.SEVERE, null, ex);
         }
        
        

@@ -2,7 +2,6 @@ package database.factory;
 
 import static utils.Config.CB_CLASS;
 import static utils.Config.DB_NAME;
-import app.Test;
 import database.skeleton.ContentBasedDBSkeleton;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +25,7 @@ public abstract class ContentBasedDBSkeletonFactory {
             
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
            
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ContentBasedDBSkeletonFactory.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Can't get ContentBasedDBSkeletonFactory class");
             
         }   

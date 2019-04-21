@@ -1,6 +1,5 @@
 package reports;
 
-import app.Test;
 import database.Evaluation;
 import evaluator.Factor;
 import java.sql.ResultSet;
@@ -55,7 +54,7 @@ public class LineChart extends Results{
                                 
         }catch (SQLException ex) {
             System.err.println("ERROR: Can't generate line chart of " + title);
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LineChart.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }

@@ -4,7 +4,9 @@ import static utils.Config.STORAGED_CORRELATION;
 import com.google.common.collect.Table;
 import database.skeleton.CollabFiltDBSkeleton;
 import database.factory.CollabFiltDBSkeletonFactory;
+import database.factory.ContentBasedDBSkeletonFactory;
 import database.factory.GenericSkelFactory;
+import database.skeleton.ContentBasedDBSkeleton;
 import database.skeleton.GenericSkeleton;
 import static java.lang.Math.sqrt;
 import java.sql.ResultSet;
@@ -278,6 +280,82 @@ public abstract class CollaborativeFiltering extends Recommender{
         return true;
     }
     
+        // scale in a 0 - 1 range
+    public static void normalizeItemVectorSpace()throws SQLException{
+        
+        GenericSkeleton gen = GenericSkelFactory.getInstance();
+        ResultSet itens = gen.getAllItems();
+        
+        ContentBasedDBSkeleton cbased = ContentBasedDBSkeletonFactory.getInstance();
+        
+        int counter = 0;
+        float scale_factor = cbased.getMaxValueFromItemVectorSpace2();
+        System.out.println(scale_factor);
+        
+        while(itens.next()){
+            
+            int item_id = itens.getInt( gen.getItemIDLabel() );
+            
+            ResultSet item_vector = cbased.getItemVectorSpace(item_id);
+            
+            item_vector.beforeFirst();
+                 
+            if(item_vector.next()){ // at least one entry to insert
+                
+                item_vector.beforeFirst();
+
+                //normaliza e salva 
+                while(item_vector.next()){
+                    cbased.updateItemVector(item_id, item_vector.getInt("tag_id"), item_vector.getFloat("relevance")/scale_factor);
+                }
+
+            }
+            
+           
+           counter++;
+           if(counter % 5000 == 0)
+                System.out.println(counter + " items were normalized.");
+            
+        }
+    }
+    
+    // pode ser unida com a query acima; precisa ser otimizada
+    public static void normalizeUserVectorSpace()throws SQLException{
+        
+        GenericSkeleton gen = GenericSkelFactory.getInstance();
+        ResultSet users = gen.getAllUsers();
+        ContentBasedDBSkeleton cbased = ContentBasedDBSkeletonFactory.getInstance();
+        
+        int counter = 0;
+        float scale_factor = cbased.getMaxValueFromUserVectorSpace();
+        System.out.println(scale_factor);
+        
+        while(users.next()){
+            
+            int user_id = users.getInt( gen.getUserIDLabel() );
+            
+            ResultSet user_vector = cbased.getUserVector(user_id);
+            
+            user_vector.beforeFirst();
+                 
+            if(user_vector.next()){ // at least one entry to insert
+                
+                user_vector.beforeFirst();
+
+                //normaliza e salva 
+                while(user_vector.next()){
+                    cbased.updateUserVector(user_id, user_vector.getInt("tag_id"), user_vector.getFloat("relevance")/scale_factor);
+                }
+
+            }
+            
+           
+           counter++;
+           if(counter % 50 == 0)
+                System.out.println(counter + " users were normalized.");
+            
+        }
+    }
     
     
 }

@@ -1,10 +1,23 @@
 package utils;
 
-import java.util.*;
+import java.util.Collection;
 
+/**
+ * 
+ * @author Paulo
+ */
 public interface RSELogger {
     
-    public void writeEntry(Collection entry); // Write list of lines
-    public void writeEntry(String entry); // Write single lines
+    /** 
+     * Write a list of lines
+     * @param entry - Collection of entries to be written 
+     */
+    public void writeEntry(Collection entry);
+    
+    /** 
+     * Write a single line
+     * @param entry - Entry to be written
+     */
+    public void writeEntry(String entry);
 
 }
