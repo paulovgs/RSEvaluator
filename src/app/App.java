@@ -27,7 +27,7 @@ public class App {
     public static void main(String[] args) {
         
        // exp();
-        //histo();
+        // histo();
         graphs();
         //multiLvlExp();
         
@@ -104,7 +104,7 @@ public class App {
            //     FactorInfluence.generatePieChart(path, rv_id, rv_name);
                  BarChart.generate(path, rv_name, id, rv_id, rvar.getString("y_axis"));
               //  BarChart.generate2(path, rv_name, rvar.getString("y_axis"), id, id2, rv_id, filter);
-              //  LineChart.generate(path, rv_name, id, rv_id, rvar.getString("y_axis"));
+           //     LineChart.generate(path, rv_name, id, rv_id, rvar.getString("y_axis"));
 
             }
                                            
