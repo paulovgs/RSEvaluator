@@ -3,7 +3,7 @@ package utils;
 import java.util.Collection;
 
 /**
- * 
+ * Class designed to log data
  * @author Paulo
  */
 public interface RSELogger {

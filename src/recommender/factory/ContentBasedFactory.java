@@ -6,8 +6,7 @@ import utils.User;
 
 /**
  *
- * @author Paulo
- * @date 10/04/2017
+ * @author Paulo (10/04/2017)
  */
 public class ContentBasedFactory extends RecommenderFactory{
     

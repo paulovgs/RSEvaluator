@@ -7,8 +7,7 @@ import java.util.LinkedHashMap;
 import utils.User;
 
 /**
- * @author Paulo
- * @date 09/18/2017
+ * @author Paulo (09/18/2017)
  */
 public class ItemItemCF extends CollaborativeFiltering{
     

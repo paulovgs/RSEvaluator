@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * @date 04/02/2018
  * @author Paulo
  */
 public class Evaluation extends DataBase {

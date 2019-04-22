@@ -4,8 +4,7 @@ import utils.RSELogger;
 
 /**
  *
- * @author Paulo
- * @data 10/25/2017
+ * @author Paulo (10/25/2017)
  */
 public class Factor {
 

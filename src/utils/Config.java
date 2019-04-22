@@ -8,22 +8,21 @@ import static evaluator.RespVarEnum.*;
 import evaluator.TimeDistEnum;
 
 /**
- * @author Paulo
- * @date 06/03/2018
+ * @author Paulo (06/03/2018)
  */
 public class Config {
     
-  //  public static final String DB_NAME = "MovieLens10M";
-    public static final String DB_NAME = "R2Yahoo";
+    public static final String DB_NAME = "MovieLens10M";
+  //  public static final String DB_NAME = "R2Yahoo";
     public static final String DB_PASS = "pgstudent";
     public static final String DB_URL = "jdbc:postgresql://localhost:5432/";
     public static final String DB_USERNAME = "postgres";
     
     public static final String USER_ID = "user_id";
-   // public static final String ITEM_ID = "movie_id";
-  //  public static final String ITEM_TABLE = "movies";
-    public static final String ITEM_ID = "song_id";
-    public static final String ITEM_TABLE = "songs";
+    public static final String ITEM_ID = "movie_id";
+    public static final String ITEM_TABLE = "movies";
+  //  public static final String ITEM_ID = "song_id";
+  //  public static final String ITEM_TABLE = "songs";
     
     public static final String GEN_CLASS = "Generic";
     public static final String CF_CLASS = "CollabFiltDB";

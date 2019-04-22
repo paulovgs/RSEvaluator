@@ -8,8 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * @author Paulo
- * @date 06/02/2018
+ * @author Paulo (2018-02-06)
  */
 public abstract class CollabFiltDBSkeleton extends DataBase{
     

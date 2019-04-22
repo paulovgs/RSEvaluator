@@ -12,8 +12,7 @@ import utils.User;
 import utils.Utils;
 
 /**
- * @author Paulo
- * @date 09/18/2017
+ * @author Paulo (09/18/2017)
  */
 public abstract class Recommender {
     

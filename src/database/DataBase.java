@@ -8,8 +8,7 @@ import java.util.logging.Logger;
 import utils.Config;
 
 /**
- * @date 04/02/2018
- * @author Paulo
+ * @author Paulo 
  */
 public abstract class DataBase {
     

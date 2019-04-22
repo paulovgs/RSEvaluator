@@ -19,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @date 03/27/2018
  * @author Paulo
  */
 public class Utils {

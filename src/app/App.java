@@ -12,24 +12,35 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import recommender.algorithm.ContentBased;
 import reports.BarChart;
 import reports.Histogram;
 import reports.LineChart;
 import utils.ConsoleLogger;
+import utils.Tags;
 import utils.Utils;
 
 /**
  * @author Paulo Vicente
- * @data 16/08/2017
  */
 public class App {
     
     public static void main(String[] args) {
         
-       // exp();
-        // histo();
-        graphs();
-        //multiLvlExp();
+        try {
+            // exp();
+            // histo();
+            // graphs();
+            //multiLvlExp();
+            
+            System.out.println( Tags.getGlobalTagList());
+
+            ContentBased.createVectorSpace("users", Tags.getGlobalTagList());
+        } catch (SQLException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     

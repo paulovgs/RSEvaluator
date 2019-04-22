@@ -23,10 +23,9 @@ import utils.User;
 import utils.Utils;
 
 /**
- * @author Paulo
- * @date 09/18/2017
- * @todo adaptação no CF para funcionar também com dados unários.Ver Curso 2 Semana 3 Cursera
- * @todo ver a possibilidade de adicionar explicações nos RS. (porque vc comprou...) Ver Curso 2 Semana 4 Cursera
+ * @author Paulo (09/18/2017)
+ * todo: adaptação no CF para funcionar também com dados unários.Ver Curso 2 Semana 3 Cursera
+ * todo: ver a possibilidade de adicionar explicações nos RS. (porque vc comprou...) Ver Curso 2 Semana 4 Cursera
  */
 public abstract class CollaborativeFiltering extends Recommender{
     
@@ -35,9 +34,8 @@ public abstract class CollaborativeFiltering extends Recommender{
     }
     
     /**
+     * Calcula a similaridade entre todo par user-user e armazena no banco de dados
      * @throws java.sql.SQLException
-     * @todo logger
-     * @desc Calcula a similaridade entre todo par user-user e armazena no banco de dados
      * @return
      */
     public static boolean UserUserPearsonSimilarity() throws SQLException{
@@ -168,8 +166,7 @@ public abstract class CollaborativeFiltering extends Recommender{
     /**
      * @return 
      * @throws java.sql.SQLException 
-     * @todo logger;
-     * @desc Calcula a similaridade entre todo par item-item e armazena no banco de dados
+     * Calcula a similaridade entre todo par item-item e armazena no banco de dados
      */
     public static boolean ItemItemPearsonSimilarity() throws SQLException{
         

@@ -5,8 +5,7 @@ import database.skeleton.GenericSkeleton;
 
 /**
  *
- * @author Paulo
- * @date 06/02/2018
+ * @author Paulo (06/02/2018)
  */
 public class GenericFactory extends GenericSkelFactory{
     

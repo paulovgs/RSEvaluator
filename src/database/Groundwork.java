@@ -17,8 +17,7 @@ import org.postgresql.copy.CopyManager;
 import org.postgresql.core.BaseConnection;
 
 /**
- * @date 08/23/2018
- * @author Paulo
+ * @author Paulo 
  */
 public class Groundwork extends DataBase {
     

@@ -8,7 +8,6 @@ import static recommender.algorithm.Recommender.NO_RECOMMENDATION;
 
 /**
  * @author Paulo
- * @date 06/02/2018
  */
 public class ContentBasedDB extends ContentBasedDBSkeleton{
     

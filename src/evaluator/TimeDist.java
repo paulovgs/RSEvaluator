@@ -15,8 +15,7 @@ import java.util.logging.Logger;
 import utils.User;
 
 /**
- * @date 03/14/2018
- * @author aluno
+ * @author aluno (03/14/2018)
  * simula diferentes distribuições de tempo de chegada dos usuarios
  */
 public class TimeDist implements Runnable{

@@ -14,8 +14,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * @author Paulo
- * @date 18/09/05
+ * @author Paulo (18/09/05)
  */
 public class LineChart extends Results{
     

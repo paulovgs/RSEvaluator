@@ -8,8 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * @author Paulo
- * @date 06/02/2018
+ * @author Paulo 
  */
 public class CollaborativeFiltDB extends CollabFiltDBSkeleton{
     

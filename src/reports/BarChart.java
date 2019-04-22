@@ -29,8 +29,7 @@ import org.jfree.ui.RefineryUtilities;
 
 /**
  *
- * @author Paulo
- * @data 11/13/2017
+ * @author Paulo (11/13/2017)
  */
 public class BarChart extends ApplicationFrame{
     

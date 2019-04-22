@@ -10,8 +10,7 @@ import java.util.Map;
 import utils.User;
 
 /**
- * @author Paulo
- * @date 04/16/2018
+ * @author Paulo (04/16/2018)
  */
 public class Hybrid extends Recommender{
     

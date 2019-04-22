@@ -9,8 +9,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.ui.ApplicationFrame;
 
 /**
- * @author Paulo
- * @date 18/09/05
+ * @author Paulo (18/09/05)
  */
 public class Results extends ApplicationFrame{
     

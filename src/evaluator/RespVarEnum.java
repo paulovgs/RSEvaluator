@@ -8,8 +8,7 @@ import java.util.Map;
 import static recommender.algorithm.Recommender.NO_RECOMMENDATION;
 
 /**
- * @author Paulo
- * @data 03/03/2018
+ * @author Paulo (03/03/2018)
  */
 public enum RespVarEnum {
     

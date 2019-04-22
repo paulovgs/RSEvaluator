@@ -22,8 +22,7 @@ import utils.Tags;
 import utils.User;
 
 /**
- * @author Paulo
- * @date 10/04/2017
+ * @author Paulo (10/04/2017)
  */
 public class ContentBased extends Recommender{
     
@@ -282,11 +281,11 @@ public class ContentBased extends Recommender{
                 double tfidf = TFIDF(tag, documents, document, documents.size());
                 // verifica qual vector space é e se já não foi inserido
                 int id = entry.getKey();
-                if(vector_space.equals("item") && !cbased.hasItemAxis(id, tag)){ 
+                /*if(vector_space.equals("item") && !cbased.hasItemAxis(id, tag)){ 
                     cbased.insertItemVector(id, tag, tfidf);
                 }else if(vector_space.equals("user") && !cbased.hasUserAxis(id, tag)){
                     cbased.insertUserVector(id, tag, tfidf);
-                }
+                }*/
                     
             }
             

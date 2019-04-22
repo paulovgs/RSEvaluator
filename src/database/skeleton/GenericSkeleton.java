@@ -10,8 +10,7 @@ import java.sql.SQLException;
 import utils.User;
 
 /**
- * @author Paulo
- * @date 06/02/2018
+ * @author Paulo (06/02/2018)
  */
 public abstract class GenericSkeleton extends DataBase{
     

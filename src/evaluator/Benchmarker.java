@@ -38,8 +38,7 @@ import utils.Utils;
 
 /**
  *
- * @author aluno
- * @data 10/25/2017
+ * @author aluno (10/25/2017)
  */
 public class Benchmarker {
     

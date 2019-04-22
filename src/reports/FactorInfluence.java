@@ -36,8 +36,7 @@ import utils.RSELogger;
 import utils.Utils;
 
 /**
- * @author Paulo
- * @data 03/03/2018
+ * @author Paulo (03/03/2018)
  */
 public class FactorInfluence {
     

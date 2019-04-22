@@ -8,8 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * @author Paulo
- * @date 06/02/2018
+ * @author Paulo (2018-06-02)
  */
 public abstract class ContentBasedDBSkeleton extends DataBase{
     

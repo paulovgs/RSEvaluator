@@ -13,7 +13,6 @@ import utils.User;
 
 /**
  * @author Paulo
- * @date 06/02/2018
  */
 public class Generic extends GenericSkeleton{
 

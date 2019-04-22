@@ -5,8 +5,7 @@ import recommender.algorithm.Recommender;
 import utils.User;
 
 /**
- * @author Paulo
- * @date 09/18/2017
+ * @author Paulo (09/18/2017)
  */
 public class ItemItemCFFactory extends RecommenderFactory{
     

@@ -8,8 +8,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Paulo
- * @date 06/02/2018
+ * @author Paulo (06/02/2018)
  */
 public abstract class GenericSkelFactory {
 
