@@ -29,19 +29,11 @@ public class App {
     
     public static void main(String[] args) {
         
-        try {
             // exp();
             // histo();
             // graphs();
             //multiLvlExp();
-            
-            System.out.println( Tags.getGlobalTagList());
 
-            ContentBased.createVectorSpace("users", Tags.getGlobalTagList());
-        } catch (SQLException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
     }
     
     public static void exp() {
