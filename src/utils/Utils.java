@@ -19,13 +19,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Encapsulates auxiliaries methods.
  * @author Paulo
  */
 public class Utils {
     
     public void Utils(){}
     
-    // ordena um mapa generico por valor
+    /**
+     * Sorts a map by value
+     * @param unsortedMap Map to be sorted
+     * @param natural_order Choose between natural and reverse order (true or false, respectively)
+     * @return The sorted map
+     */
     public static <K, V extends Comparable<? super V>> LinkedHashMap<K, V> sortByValue(LinkedHashMap<K, V> unsortedMap, boolean natural_order) {
 
         if(unsortedMap.isEmpty())
@@ -49,6 +55,10 @@ public class Utils {
 
     }
     
+    /**
+     * Prints a map. Just for test purposes
+     * @param map Map to be printed
+     */
     public static <K, V> void printMap(Map<K, V> map) {
 
         for (Map.Entry<K, V> entry : map.entrySet()) {
@@ -59,25 +69,31 @@ public class Utils {
         
     }
     
-    public static LinkedHashMap<Integer, Float> pruneMap(LinkedHashMap<Integer, Float> map, int quantity_limit, float value_limit){
+    /**
+     * Given a map, will remove all entries below the threshold. Also, its length will be at most the ammount specified in the second parameter.
+     * @param map The input map
+     * @param max_length The biggest ammount of items the map can have
+     * @param threshold The lowest value that an item can have inside the input map
+     * @return The pruned map
+     */
+    public static LinkedHashMap<Integer, Float> pruneMap(LinkedHashMap<Integer, Float> map, int max_length, float threshold){
         
         if(map.isEmpty())
-                return map;
+            return map;
         
         int counter = 0;
        
-       Iterator<Map.Entry<Integer, Float >> iter = map.entrySet().iterator();
+        Iterator<Map.Entry<Integer, Float >> iter = map.entrySet().iterator();
        
         while (iter.hasNext()) {
             
             Entry<Integer, Float > entry = iter.next();
-            
             counter++;
-            if(counter > quantity_limit){
+            if(counter > max_length){
                 
                 iter.remove();
                 
-            }else if(entry.getValue() < value_limit){ // retira da lista valores abaixo de um determinado limiar
+            }else if(entry.getValue() < threshold){ // retira da lista valores abaixo de um determinado limiar
                 iter.remove();
                 counter--;
             }
@@ -88,6 +104,9 @@ public class Utils {
        
     }
     
+    /**
+     * Computes and stores the non-personalized score of all items
+     */
     public static void nonPersonalizedScore(){
         
         try {
@@ -120,11 +139,23 @@ public class Utils {
         }
     }
 
+    /**
+     * Prints the specified message on console when a certain condition is satisfied. Must be used inside a loop.
+     * For example, would print a "Items processed: x" every x items processed
+     * @param counter The current counter of the loop
+     * @param message The message to be printed
+     * @param condition Will print the message every when counter were a multiple of condition
+     */
     public static void printIf(int counter, String message, int condition){
         if(counter % condition == 0)
             System.out.println(message + " " + counter);
     }
     
+    /**
+     * Prints a label at the beginning of each experiment/repetition
+     * @param index The current experiment
+     * @param var 1 for experiment; 2 for repetition
+     */
     public static void printExperiment(int index, int var){
         
             switch(var){
@@ -140,94 +171,29 @@ public class Utils {
                     
         }
     
-    public static void makeDir(int id){
+    /**
+     * Creates a folder inside the one called "Experiments". Its name is usually the id of the current experiment.
+     * @param dir_name The name of the folder
+     */
+    public static void makeDir(String dir_name){
         
         String OpSys = System.getProperty("os.name");
         String slash = (OpSys.equals("Linux")) ? "/" : "\\";
-        String path = "Experiments"+ slash + id;
+        String path = "Experiments"+ slash + dir_name;
 
         File file = new File(System.getProperty("user.dir") + slash + path); //linux
         if (!file.exists())
                     file.mkdirs();
-            
         
     }
     
+    /**
+     * Computes the average rating of each item
+     * @return 
+     * @throws SQLException 
+     */
     public static boolean itensAverageRating() throws SQLException{
         return User.computeAverageRating(false);
-    }
-    
-    public static void removeBottom(){
-        
-        try {
-            
-            GenericSkeleton gen = GenericSkelFactory.getInstance();
-            ResultSet items = gen.getAllItems();
-            
-            String iid = gen.getItemIDLabel();
-            
-            int count = 0;
-            
-            while(items.next()){
-                
-                int item_id = items.getInt(iid);
-                
-                gen.executeUpdate("delete from item_similarity where item_x = "+item_id+" and " +
-                    "item_y not in(select item_y from item_similarity where item_x = "+item_id+" order by similarity desc limit 1000)"
-                );
-                                
-                Utils.printIf(++count, "Items processed:", 1000);
-                
-            }
-            
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-    
-    public static void removeBottomUsers(){
-        
-        try {
-            
-            GenericSkeleton gen = GenericSkelFactory.getInstance();
-            ResultSet users = gen.getAllUsers();
-            
-            String uid = gen.getUserIDLabel();
-            
-            int count = 0;
-            
-            while(users.next()){
-                
-                int user_id = users.getInt(uid);
-                
-                gen.executeUpdate("delete from user_similarity where user_x = "+user_id+" and " +
-                    "user_y not in(select user_y from user_similarity where user_x = "+user_id+" order by similarity desc limit 1000)"
-                );
-                                
-                Utils.printIf(++count, "Users processed:", 1000);
-                
-            }
-            
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-    
-    public static void removeBelowID(int user_id){
-
-        try {
-            GenericSkeleton gen = GenericSkelFactory.getInstance();
-            gen.executeUpdate("delete from user_similarity where user_x < "+user_id );
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-
     }
         
 }

@@ -1,7 +1,6 @@
 package reports;
 
 import database.Evaluation;
-import evaluator.Factor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -14,7 +13,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * @author Paulo (18/09/05)
+ * Create a line chart representation of the results
+ * @author Paulo
  */
 public class LineChart extends Results{
     

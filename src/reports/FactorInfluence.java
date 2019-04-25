@@ -23,7 +23,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtils;
-//import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
@@ -31,12 +30,12 @@ import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import utils.ConsoleLogger;
-import utils.FileLogger;
 import utils.RSELogger;
 import utils.Utils;
 
 /**
- * @author Paulo (03/03/2018)
+ * Calculate the factor influence and create a pie chart representation of it.
+ * @author Paulo
  */
 public class FactorInfluence {
     

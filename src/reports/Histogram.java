@@ -5,7 +5,6 @@ import java.io.*;
 import static java.lang.Math.round;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.chart.*;
@@ -13,14 +12,14 @@ import org.jfree.data.statistics.*;
 import org.jfree.chart.plot.PlotOrientation;
 
 /**
- *
+ * Create a histogram that represents a temporal distribution of users for a specific eperiment
  * @author Paulo
  */
 public class Histogram {
     
-    private int experiment_id;
-    private int evaluation_id;
-    private float avg_time_rec;
+    private final int experiment_id;
+    private final int evaluation_id;
+    private final float avg_time_rec;
     
     public Histogram(int experiment_id, int evaluation_id, float avg_time_rec){
 

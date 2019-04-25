@@ -8,7 +8,7 @@ import static evaluator.RespVarEnum.*;
 import evaluator.TimeDistEnum;
 
 /**
- * @author Paulo (06/03/2018)
+ * @author Paulo
  */
 public class Config {
     
@@ -37,7 +37,7 @@ public class Config {
     public static int TIME_RANGE = 400;
 
     public static final float ACCEPTABLE_VALUE = (float) 6.5; // valor aceito como relevante
-    public static final float PREDICTION_LIMIT = (float) 6.5; // limita a lista de recomendação para valores maiores que esse
+    public static final float PREDICTION_LIMIT = (float) 3; // limita a lista de recomendação para valores maiores que esse
     public static final float MAX_SCALE = 10; // valor máximo da escala, util para escalar em alguns recomendadores
     public static final float CONFIDENCE_INTERV = (float) 0.9;
 
@@ -65,11 +65,12 @@ public class Config {
         
        // /*
        
-        Factor workload = fillFactor("300", "750", T_WORKLOAD);      
+        //Factor workload = fillFactor("300", "750", T_WORKLOAD);      
+        Factor workload = fillFactor("50", "75", T_WORKLOAD);      
         Factor cand_alter = fillFactor("30", "60", T_CANDIDATES_SIZE);      
         Factor alternative = fillFactor("false", "true", T_ALTERNATIVE_RECOMMENDATION); 
         
-        T_RECOMMENDATION_LIST_LENGTH.setDefault("10");
+        T_RECOMMENDATION_LIST_LENGTH.setDefault("40");
         T_NEIGHBOORHOOD_SIZE.setDefault("25");
 
         cand_alter.compose(alternative);

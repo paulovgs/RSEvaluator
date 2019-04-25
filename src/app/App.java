@@ -5,21 +5,16 @@ import static utils.Config.CONFIDENCE_INTERV;
 import database.Evaluation;
 import evaluator.Benchmarker;
 import evaluator.Factor;
-import reports.FactorInfluence;
 import evaluator.FactorTypesEnum;
 import evaluator.ResponseVariable;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Collection;
-import recommender.algorithm.ContentBased;
+import java.util.Scanner;
 import reports.BarChart;
 import reports.Histogram;
-import reports.LineChart;
 import utils.ConsoleLogger;
-import utils.Tags;
 import utils.Utils;
 
 /**
@@ -27,16 +22,80 @@ import utils.Utils;
  */
 public class App {
     
+    private boolean exit;
+    
+    public App(){
+        exit = false;
+    }
+    
     public static void main(String[] args) {
         
-            // exp();
-            // histo();
-            // graphs();
-            //multiLvlExp();
+            App app = new App();
+            app.printHeader();
+            while(!app.exit){
+                app.printMenu();
+                int option = app.getInput();
+                app.performAction(option);
+            }
+            
 
     }
     
-    public static void exp() {
+    private void printHeader(){
+            System.out.println("|===========================================================================|");
+            System.out.println("|                   Recommender Systems Evaluator                           |");
+            System.out.println("|===========================================================================|");
+        
+    }
+    
+    private void printMenu(){
+        System.out.println("\n[1] Multi Factorial Experiment");
+        System.out.println("[2] Multi Level Experiment");
+        System.out.println("[3] Show Graphs");
+        System.out.println("[4] Show Histogram");
+        System.out.println("[5] Quit");
+    }
+    
+    private int getInput(){
+        int option = -1;
+        Scanner scan = new Scanner(System.in);
+        
+        while(option < 0 || option > 5){
+            try{
+                System.out.print("\nEnter your selection:");
+                option = Integer.parseInt(scan.nextLine());
+            }catch(NumberFormatException ex){
+                System.err.println("Invalid option. Please try again");
+            }
+        }
+        
+        return option;
+    }
+    
+    private void performAction(int option){
+        switch(option){
+            case 1:
+                exp();
+                break;
+            case 2:
+                multiLvlExp();
+                break;
+            case 3:
+                graphs();
+                break;
+            case 4:
+                histo();
+                break;
+            case 5:
+                exit = true;
+                break;
+            default:
+                System.err.println("An unkwnow error has occurred");
+                
+        }
+    }
+    
+    private void exp() {
         
         try{
             
@@ -46,7 +105,7 @@ public class App {
             ResponseVariable.persistResponseVariables();
             
             Evaluation evaluation = Evaluation.getInstance();
-            int id = evaluation.saveEvaluation("UserUser R2 17 Nov", CONFIDENCE_INTERV);
+            int id = evaluation.saveEvaluation("Testing", CONFIDENCE_INTERV);
             
             Benchmarker bcmk = Benchmarker.getInstance(); 
             bcmk.settings(CONFIDENCE_INTERV, id);
@@ -54,15 +113,15 @@ public class App {
             ConsoleLogger logger = new ConsoleLogger();
             logger.writeEntry("Evaluation id: "+id);
 
-            bcmk.warmUp();
+          //  bcmk.warmUp();
             
             Config.setFactors(bcmk);
             bcmk.persistFactors();
             Config.setResponseVariables(); // diz quais serão salvas
 
-            bcmk.setNumberOfReplicas(10);
+            bcmk.setNumberOfReplicas(3);
             //bcmk.pilotExperiment();
-            bcmk.pilotExperiment2();
+          //  bcmk.pilotExperiment2();
             bcmk.experiment(true);
             
             logger.writeEntry("Experimento Realizado Com Sucesso!!!!");
@@ -76,13 +135,13 @@ public class App {
         
     }
     
-    public static void histo() {
+    private void histo() {
         
         int eval_id = 475;
         Histogram.generate(eval_id);
     }
     
-    public static void graphs(){
+    private void graphs(){
 
         try {
             
@@ -91,7 +150,7 @@ public class App {
             Benchmarker bcmk = Benchmarker.getInstance();
             bcmk.settings(CONFIDENCE_INTERV, id);
 
-            Utils.makeDir(id);
+            Utils.makeDir(Integer.toString(id));
             String path = "Experiments/"+id; //Linux
             //String path = "Experiments\\" + id; //Windows
 
@@ -118,7 +177,7 @@ public class App {
 
     }
     
-    public static void multiLvlExp() {
+    private void multiLvlExp() {
         
         try{
             
@@ -156,7 +215,6 @@ public class App {
 
         
     }
-        
 
 }
 

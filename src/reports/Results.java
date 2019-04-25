@@ -9,7 +9,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.ui.ApplicationFrame;
 
 /**
- * @author Paulo (18/09/05)
+ * General methods to deal with graph results. 
+ * @author Paulo
  */
 public class Results extends ApplicationFrame{
     

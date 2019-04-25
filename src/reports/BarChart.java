@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.chart.ChartPanel; 
 import org.jfree.chart.ChartUtils;
-//import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart; 
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
@@ -28,9 +27,9 @@ import org.jfree.chart.renderer.category.StatisticalBarRenderer;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- *
- * @author Paulo (11/13/2017)
- */
+* Create a bar chart representation of the results
+* @author Paulo
+*/
 public class BarChart extends ApplicationFrame{
     
     public BarChart( String path, String applicationTitle , String chartTitle, int evaluation_id, int rv_id, String y_axis) throws SQLException {

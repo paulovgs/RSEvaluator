@@ -1,6 +1,4 @@
-
 package database;
-
 
 import database.skeleton.CollabFiltDBSkeleton;
 import java.sql.ResultSet;
@@ -34,8 +32,8 @@ public class CollaborativeFiltDB extends CollabFiltDBSkeleton{
         
         String wh2 = (tset != null) ? " and user_y not in " + tset : ""; // exclui valores de test set
         
-        return stm2.executeQuery("select user_y, similarity, users.global_avg_rt from user_similarity_new" +
-                                 " join users on users."+this.user_id+" = user_similarity_new.user_y" +
+        return stm2.executeQuery("select user_y, similarity, users.global_avg_rt from user_similarity" +
+                                 " join users on users."+this.user_id+" = user_similarity.user_y" +
                                  " where user_x = " + user_id + wh2 +
                                  " order by similarity desc limit " + neighborhood
         );
