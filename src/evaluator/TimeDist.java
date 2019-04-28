@@ -4,7 +4,6 @@ import database.Evaluation;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -15,8 +14,8 @@ import java.util.logging.Logger;
 import utils.User;
 
 /**
- * @author aluno (03/14/2018)
- * simula diferentes distribuições de tempo de chegada dos usuarios
+ * Simulates different distributions of time. Users will request recommendations following this distributions
+ * @author Paulo
  */
 public class TimeDist implements Runnable{
 
@@ -81,11 +80,7 @@ public class TimeDist implements Runnable{
         } catch (InterruptedException ex) {
             Logger.getLogger(TimeDist.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        //if(pre_queue.isEmpty()) System.out.println("Pré Fila vazia!!!!!!!!!!!");
-        
-        
+                
     }
     
     private void allAtOnce(){

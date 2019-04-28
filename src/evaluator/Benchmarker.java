@@ -31,14 +31,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 import org.apache.commons.math3.distribution.TDistribution;
 import static recommender.algorithm.Recommender.NO_RECOMMENDATION;
-import utils.ConsoleLogger;
-import utils.RSELogger;
 import utils.User;
 import utils.Utils;
 
 /**
- *
- * @author aluno (10/25/2017)
+ * @author Paulo
  */
 public class Benchmarker {
     
@@ -98,8 +95,6 @@ public class Benchmarker {
     
     public Map<Integer, Float> getTimeClasses(){ return time_classes; }
     
-  //  public void setTimeClasses(Map<Integer, Float> classes){ time_classes = classes; }
-    
     public int getLevel(){ return level; }
     
     public int getEvaluationID(){ return evaluation_id; }
@@ -121,7 +116,6 @@ public class Benchmarker {
     public void setTestSet(Map< Integer,  Collection<Integer> > user_map, int piece, boolean shuffle){
         
         test_set = (ArrayList <Integer>) user_map.get(piece); // pega uma porção da lista -> k fold
-        //test_set.add(750); //only for tests
         if(shuffle == true)
             Collections.shuffle(test_set); // randomiza
         
@@ -148,7 +142,6 @@ public class Benchmarker {
         
         while (rSet.next()){
             
-            //list.add(rSet.getInt(gen.getUserIDLabel()));
             list.add(rSet.getInt(gen.getUserIDLabel()));
             counter++;
             
@@ -166,6 +159,13 @@ public class Benchmarker {
     *                    Experiments                   *
     *==================================================*/
     
+    /**
+     * Find the ideal number of replicas. This operation may take a lot of time
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws SQLException 
+     */
     public void pilotExperiment() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         
         number_of_replicas -= 4; // descontar a primeira
@@ -187,9 +187,14 @@ public class Benchmarker {
         
     }
     
-    /*
-        Cálculo do número de repetições versão 2
-    */
+
+    /**
+     * Calculation of the number of replicas version 2
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws SQLException 
+     */
     public void pilotExperiment2() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         
         float max_error = 0.14f;
@@ -219,18 +224,8 @@ public class Benchmarker {
         }
         
         System.out.println("Número de réplicas alcansado!!!!!: " + number_of_replicas);
-        
-        // ESSE IF SERÁ TIRADO DEPOIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if(number_of_replicas < 5){
-            number_of_replicas = 6;
-            System.out.println("Ajuste do número de repetições para "+number_of_replicas);
-        }else if(number_of_replicas < 10){
-            number_of_replicas = 10;
-            System.out.println("Ajuste do número de repetições para "+number_of_replicas);
-        }
-            
-       // System.out.println("Exp feito com " + number_of_replicas + " repetições");
-      //  System.out.println("Intervalo alcançado: " + max_conf_interv_amp );
+        System.out.println("Exp feito com " + number_of_replicas + " repetições");
+        System.out.println("Intervalo alcançado: " + max_conf_interv_amp );
         System.out.println("=================================================================================================");
         
     }
@@ -243,20 +238,7 @@ public class Benchmarker {
 
             int range_backup = Config.TIME_RANGE;
             Config.TIME_RANGE = 7;
-            
-            
-            // WARMUP MULTILEVEL
-             /*
-            Factor lista = Factor.createMultiLevelFactor(T_RECOMMENDATION_LIST_LENGTH);
-            T_WORKLOAD.setDefault("30");
-            T_ALTERNATIVE_RECOMMENDATION.setDefault("false");
-            T_NEIGHBOORHOOD_SIZE.setDefault("25");
-            T_CANDIDATES_SIZE.setDefault("30");
-            this.addFactor(lista);
-             */
-        
 
-           //  /*
             Factor carga = Config.fillFactor("50", "50", T_WORKLOAD);
             this.addFactor(carga);
            // Factor list_size = Config.fillFactor("6", "18", T_RECOMMENDATION_LIST_LENGTH);
@@ -265,20 +247,14 @@ public class Benchmarker {
             Factor qtd_items = Config.fillFactor("15", "30", T_CANDIDATES_SIZE);
             //Factor qtd_viz = Config.fillFactor("6", "18", T_NEIGHBOORHOOD_SIZE);
            // qtd_viz.compose(qtd_items);
-          //  this.addFactor(qtd_viz);
 
             this.addFactor(qtd_items);
-           // this.addFactor(qtd_viz);
             T_NEIGHBOORHOOD_SIZE.setDefault("15");
             T_RECOMMENDATION_LIST_LENGTH.setDefault("10");
-           //  */
 
             Config.setResponseVariables();
-
             this.setNumberOfReplicas(4);
-            
             this.experiment(false);
-            //this.oneFacMultiLvlExp(false);
 
             //this.getFactors().clear(); // limpa os fatores para começar o experimento oficial
             this.settings(confidence_interval, evaluation_id); // to clear structures
@@ -290,6 +266,37 @@ public class Benchmarker {
             Logger.getLogger(Benchmarker.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+    public void multiLvlWarmup() throws SQLException{
+        
+        try {
+
+            System.out.println("Starting Warm Up...");
+
+            int range_backup = Config.TIME_RANGE;
+            Config.TIME_RANGE = 7;
+
+            Factor lista = Factor.createMultiLevelFactor(T_RECOMMENDATION_LIST_LENGTH);
+            T_WORKLOAD.setDefault("30");
+            T_ALTERNATIVE_RECOMMENDATION.setDefault("false");
+            T_NEIGHBOORHOOD_SIZE.setDefault("25");
+            T_CANDIDATES_SIZE.setDefault("30");
+            this.addFactor(lista);
+        
+            Config.setResponseVariables();
+            this.setNumberOfReplicas(4);
+            this.oneFacMultiLvlExp(false);
+
+            //this.getFactors().clear(); // limpa os fatores para começar o experimento oficial
+            this.settings(confidence_interval, evaluation_id); // to clear structures
+            Config.TIME_RANGE = range_backup;
+
+            System.out.println("Warm Up Finished.\n\n\n\n");
+
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(Benchmarker.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
         
     public void experiment(boolean official_exp) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
@@ -384,8 +391,6 @@ public class Benchmarker {
                                 recommendation_list.forEach((item_id, prediction) -> { // preenchendo a tabela user, item, prediction
                                     recommendation_table.put(usr.getID(), item_id, prediction);
                                 });
-                               // System.out.println(recommendation_list);
-
                             }
                            
                             arrival_queue.poll();
@@ -520,7 +525,7 @@ public class Benchmarker {
             
             System.out.println("Lista = "+ rec_list_length);
             
-            // ******** NÃO MUDEI NADA DAQUI PRA FRENTE ************* só tirei print
+            // ******** NÃO MUDEI NADA DAQUI PRA FRENTE ************* só tirei prints
                             
             try {
                 
@@ -572,8 +577,6 @@ public class Benchmarker {
                                 recommendation_list.forEach((item_id, prediction) -> { // preenchendo a tabela user, item, prediction
                                     recommendation_table.put(usr.getID(), item_id, prediction);
                                 });
-                               // System.out.println(recommendation_list);
-
                             }
                            
                             arrival_queue.poll();

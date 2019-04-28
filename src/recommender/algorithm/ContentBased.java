@@ -22,7 +22,7 @@ import utils.Tags;
 import utils.User;
 
 /**
- * @author Paulo (10/04/2017)
+ * @author Paulo
  */
 public class ContentBased extends Recommender{
     
@@ -49,7 +49,7 @@ public class ContentBased extends Recommender{
         
         float den, den2 = 0, item_attr_rel, score;
         
-        int current_item_id, get_id_change, attr_id;
+        int current_item_id, attr_id;
         LinkedHashMap<Integer, Float> recommendation_list = new LinkedHashMap<>();
         
         for(Entry<Integer, Float> entry : user_attr_vector.entrySet())
@@ -96,7 +96,6 @@ public class ContentBased extends Recommender{
     @Override
     public void alternativeScore(int items_qtd, LinkedHashMap<Integer, Float> recommendation_list) throws SQLException{
         
-      //  GenericSkeleton gen = GenericSkelFactory.getInstance();
         ResultSet items = gen.getNonPersonalizedScore(items_qtd, user.getID());
         
         while(items.next()){

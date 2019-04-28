@@ -63,7 +63,7 @@ public class ContentBasedDB extends ContentBasedDBSkeleton{
         
     }
     
-    @Override // FOI JUNTADO COM GETITEMVECTORSPACE2 ************
+    @Override
     public ResultSet getItemVectorSpace(int item_id) throws SQLException{
         
         Statement st = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -181,8 +181,14 @@ public class ContentBasedDB extends ContentBasedDBSkeleton{
     }
     
     /*                                          
-    * MÉTODOS DA FORMA ALTERNATIVA DE CRIAR TAGS
+    * ALTERNATIVE METHODS TO CREATE TAGS
+    * To work with this, the old database structure must be recreated
+    * May be removed, just need to be sure they won't be used anymore
     */
+    
+    /**
+     * @deprecated 
+     */
     @Override
     public void insertUserVector(int item_id, String tag, double tfidf) throws SQLException{
         
@@ -191,6 +197,9 @@ public class ContentBasedDB extends ContentBasedDBSkeleton{
         
     }
     
+    /**
+     * @deprecated 
+     */
     @Override
     public boolean hasItemAxis(int item_id, String attribute) throws SQLException{
         
@@ -200,13 +209,21 @@ public class ContentBasedDB extends ContentBasedDBSkeleton{
         
     }
     
+    /**
+     * @deprecated 
+     */
     @Override
     public boolean hasUserAxis(int user_id, String attribute) throws SQLException{
+        
         Statement st = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         ResultSet r = st.executeQuery("select "+this.user_id+" from user_vector_space where "+this.user_id+" = "+user_id+" and attribute = '"+attribute+"'");
         return r.first();
+        
     }
     
+    /**
+     * @deprecated 
+     */
     @Override
     public ResultSet getItemAndTags() throws SQLException{
         
@@ -215,6 +232,9 @@ public class ContentBasedDB extends ContentBasedDBSkeleton{
 
     }
     
+    /**
+     * @deprecated 
+     */
     @Override
     public ResultSet getUserAndTags() throws SQLException{
         
@@ -223,6 +243,9 @@ public class ContentBasedDB extends ContentBasedDBSkeleton{
 
     }
     
+    /**
+     * @deprecated 
+     */
     @Override
     public void updateFormatedString(String table, String target_column, String new_target, String pk1, String pk2,
                                      int fpk1, int fpk2, String target) throws SQLException{
@@ -235,6 +258,9 @@ public class ContentBasedDB extends ContentBasedDBSkeleton{
         
     }
     
+    /**
+     * @deprecated 
+     */
     @Override
     public ResultSet getGlobalTagList() throws SQLException{
         

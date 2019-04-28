@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * @author Paulo (2018-02-06)
+ * @author Paulo
  */
 public abstract class CollabFiltDBSkeleton extends DataBase{
     
@@ -24,6 +24,7 @@ public abstract class CollabFiltDBSkeleton extends DataBase{
         user_id = USER_ID;
         item_id = ITEM_ID;
         item_table = ITEM_TABLE;
+        
     }
     
     public abstract ResultSet getTopUserNeighbors(String tset, int user_id, int limit_of_users) throws SQLException;
@@ -35,8 +36,5 @@ public abstract class CollabFiltDBSkeleton extends DataBase{
     public abstract void bulkInsSim(String bulk_insert) throws SQLException;  
     
     public abstract ResultSet getTopItemNeighbors(int user_id, int item_x, int limit_of_users) throws SQLException;
-    
-    
-   
     
 }

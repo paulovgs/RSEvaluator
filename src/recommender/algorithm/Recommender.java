@@ -12,7 +12,7 @@ import utils.User;
 import utils.Utils;
 
 /**
- * @author Paulo (09/18/2017)
+ * @author Paulo
  */
 public abstract class Recommender {
     

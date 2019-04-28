@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * Methods to deal specifically with the Evaluation database. 
+ * Evaluation is intent to store the results of the experiments
  * @author Paulo
  */
 public class Evaluation extends DataBase {
@@ -187,8 +189,5 @@ public class Evaluation extends DataBase {
         return st.executeQuery("select * from evaluations where evaluation_id = " + eval_id );
         
     }
-       
-        
-
     
 }

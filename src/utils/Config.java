@@ -52,6 +52,11 @@ public class Config {
     // invalid number constant
     public static final int INVALID_NUMBER = -1;
     
+    
+    public static final int MULTI_LVL_MIN = 3; 
+    public static final int MULTI_LVL_MAX = 15;
+    public static final int MULTI_LVL_STEP = 2;
+    
     public static void setFactors(Benchmarker bcmk){
                
         /*

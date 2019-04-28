@@ -24,7 +24,14 @@ import utils.Utils;
  */
 public class RSE {
     
-     public String exp(String exp_name, boolean warmup, int number_of_replicas) {
+    /**
+     * Multi factorial experiment with two levels of variation each.
+     * @param exp_name The name of the experiment
+     * @param warmup Should the warmup method be used? True for use it, false otherwise
+     * @param number_of_replicas The desired number of replicas. If 0, the framwork will try to find the ideal number of replicas. This operation may take a long time though.
+     * @return Success/fail message
+     */
+    public String exp(String exp_name, boolean warmup, int number_of_replicas) {
         
         try{
             
@@ -64,17 +71,31 @@ public class RSE {
             return "Experimento Realizado Com Sucesso!!!! Evaluation ID: "+id;
 
         }  catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             return "Error when running multi factorial experiment.";
         }
-
         
     }
     
+    /**
+     * Create and save histograms into the project folder.
+     * @param evaluation_id The ID of the desired experiment.
+     * @return Success/fail message
+     */
     public String histo(int evaluation_id) {        
         return Histogram.generate(evaluation_id);
     }
     
+    /**
+     * Present results in a graphical way.
+     * ToDo: The filter for comparative graphs must be dynamically choosed 
+     * @param id The evaluation ID
+     * @param id_comp The second evaluation ID. It is only used in comparative graphs.
+     * @param opt 1 = Show results in bar graphs. 2 = Show factor influence in pie graphs. 
+     *            3 = Line graphs for the multilevel experiments. 4 = Comparative bar graphs between two evaluations.
+     * @param op_sys The property "name" of the current operating system
+     * @return Success/fail/info message
+     */
     public String graphs(int id, int id_comp, int opt, String op_sys){
         
         String result = "";
@@ -85,7 +106,7 @@ public class RSE {
             bcmk.settings(CONFIDENCE_INTERV, id);
 
             Utils.makeDir(Integer.toString(id));
-            String path = (App.isWindows(op_sys)) ? "Experiments\\" + id : "Experiments/"+id;
+            String path = (Menu.isWindows(op_sys)) ? "Experiments\\" + id : "Experiments/"+id;
 
             Evaluation evaluation = Evaluation.getInstance();
             ResultSet rvar = evaluation.getResponseVariables(id);
@@ -93,8 +114,8 @@ public class RSE {
             if(rvar.next() == false)
                 return "Tere is no data to present";
 
-
-            int[] filter = {0, 4, 6}; // atenção: ESSES VALORES CORRESPONDEM AOS EXPERIMENT_IDS 1,3 E 5!!!! p/todos colocar filter = new int[0]
+            // filter exp 1,3 and 5. For all exp, put new int[0]
+            int[] filter = {0, 4, 6}; 
 
             do{
                 
@@ -121,7 +142,7 @@ public class RSE {
             }while(rvar.next());
                                            
         } catch (SQLException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             result = "Error when creating graphs.";
         }
         
@@ -130,6 +151,15 @@ public class RSE {
 
     }
     
+         
+    
+    /**
+     * Executes the one-factor-multi-level experiment
+     * @param exp_name The name of the experiment
+     * @param warmup Should the warmup method be used? True for use it, false otherwise
+     * @param number_of_replicas The desired number of replicas. If 0, the framwork will try to find the ideal number of replicas. This operation may take a long time though.
+     * @return Success/fail message
+     */
     public String multiLvlExp(String exp_name, boolean warmup, int number_of_replicas) {
         
         try{
@@ -138,7 +168,7 @@ public class RSE {
             
             FactorTypesEnum.persistFactorTypes();
             ResponseVariable.persistResponseVariables();
-            Factor.setMultiLevel(3, 15, 2);
+            Factor.setMultiLevel(Config.MULTI_LVL_MIN, Config.MULTI_LVL_MAX, Config.MULTI_LVL_STEP);
             
             Evaluation evaluation = Evaluation.getInstance();
             int id = evaluation.saveEvaluation(exp_name, CONFIDENCE_INTERV);
@@ -150,7 +180,7 @@ public class RSE {
             logger.writeEntry("Evaluation id: "+id);
 
             if(warmup)
-                bcmk.warmUp();
+                bcmk.multiLvlWarmup();
             
             Config.setFactors(bcmk);
             bcmk.persistFactors();
@@ -170,10 +200,17 @@ public class RSE {
             return "Experimento Realizado Com Sucesso!!!! Evaluation ID: "+id;
 
         }  catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             return "Error when running multi level experiment.";
         }
 
+        
+    }
+    
+    /**
+     * Checks if the evaluation database exists. Create one if do not exist yet. 
+     */
+    public void checkEvaluationDatabase(){
         
     }
 

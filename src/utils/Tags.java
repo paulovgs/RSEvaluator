@@ -138,14 +138,6 @@ public class Tags {
         
     }
     
-    /**
-     * 
-     * @param tagSet
-     * @param gen
-     * @param space_vec
-     * @return
-     * @throws SQLException 
-     */
     public static Map< Integer, ArrayList<String> > reduce(ResultSet tagSet, GenericSkeleton gen, String space_vec) throws SQLException{
         
         int current_id, item_change = NO_RECOMMENDATION;

@@ -4,8 +4,8 @@ import database.skeleton.CollabFiltDBSkeleton;
 import database.CollaborativeFiltDB;
 
 /**
- *
- * @author Paulo (06/02/2018)
+ * 
+ * @author Paulo
  */
 public class CollabFiltDBFactory extends CollabFiltDBSkeletonFactory{
     
@@ -13,6 +13,5 @@ public class CollabFiltDBFactory extends CollabFiltDBSkeletonFactory{
     public CollabFiltDBSkeleton getDataBaseInst(String dbName){
         return CollaborativeFiltDB.getInstance(dbName);
     }
-
-
+    
 }

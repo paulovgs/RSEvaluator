@@ -5,8 +5,7 @@ import recommender.algorithm.Recommender;
 import utils.User;
 
 /**
- *
- * @author Paulo (10/04/2017)
+ * @author Paulo
  */
 public class ContentBasedFactory extends RecommenderFactory{
     

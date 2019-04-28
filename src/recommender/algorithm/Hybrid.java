@@ -10,7 +10,7 @@ import java.util.Map;
 import utils.User;
 
 /**
- * @author Paulo (04/16/2018)
+ * @author Paulo
  */
 public class Hybrid extends Recommender{
     

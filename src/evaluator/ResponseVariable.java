@@ -18,7 +18,6 @@ import static recommender.algorithm.Recommender.NO_RECOMMENDATION;
 import utils.Utils;
 
 /**
- *
  * @author Paulo
  */
 public class ResponseVariable {

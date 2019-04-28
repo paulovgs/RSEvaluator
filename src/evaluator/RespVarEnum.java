@@ -8,7 +8,7 @@ import java.util.Map;
 import static recommender.algorithm.Recommender.NO_RECOMMENDATION;
 
 /**
- * @author Paulo (03/03/2018)
+ * @author Paulo
  */
 public enum RespVarEnum {
     

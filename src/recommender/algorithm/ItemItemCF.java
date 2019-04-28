@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import utils.User;
 
 /**
- * @author Paulo (09/18/2017)
+ * @author Paulo
  */
 public class ItemItemCF extends CollaborativeFiltering{
     
@@ -15,44 +15,6 @@ public class ItemItemCF extends CollaborativeFiltering{
         super(limit_of_items, limit_of_users, t_user, rec_list_length);
 
     }
-    
-
-    
-    @Override
-    /*public LinkedHashMap<Integer, Float> score() throws SQLException{
-
-      //  gen.setHistoryAverageRating(user); // pega os filmes do historico do target_user, em ordem aleatoria
-        int user_id = user.getID();
-        ResultSet iSet = gen.getHistory2FromUser(user_id);
-               
-        float num = 0, den = 0, pearson;
-        int item_x, counter = 0;
-        LinkedHashMap<Integer, Float> recommendation_list = new LinkedHashMap<>();
-        String item_id_label = gen.getItemIDLabel();
-        
-        while (iSet.next() && counter < candidates){ // pega n itens mais similares ao historico do target_user, limitados pela quantidade de candidatos
-               
-            item_x = iSet.getInt(item_id_label);
-            ResultSet jSet = collab.getTopItemNeighbors(user_id, item_x, neighborhood);
-            
-            while(jSet.next()){
-                pearson = jSet.getFloat("similarity");
-                num += pearson * (jSet.getFloat("rating") - jSet.getFloat("global_avg_rt"));
-                den += Math.abs(pearson);
-            }
-            
-            if(num != 0 && den!= 0){
-                recommendation_list.put(item_x, num/den + iSet.getFloat("global_avg_rt"));
-                counter ++;
-            }
-           
-            num = den = 0;            
-        }
-        
-        //System.out.println("size = "+recommendation_list.size() + " => "+recommendation_list);
-        return recommendation_list; 
-        
-    }*/
     
     public LinkedHashMap<Integer, Float> score() throws SQLException{
 
@@ -81,7 +43,6 @@ public class ItemItemCF extends CollaborativeFiltering{
             num = den = 0;            
         }
         
-        //System.out.println("size = "+recommendation_list.size() + " => "+recommendation_list);
         return recommendation_list; 
         
     }
@@ -89,7 +50,6 @@ public class ItemItemCF extends CollaborativeFiltering{
     @Override
     public void alternativeScore(int items_qtd, LinkedHashMap<Integer, Float> recommendation_list) throws SQLException{
         
-        //GenericSkeleton gen = GenericSkelFactory.getInstance();
         gen.setHistoryAverageRating(user);
         ResultSet items = gen.getNonPersonalizedScore(items_qtd, user.getID());
         

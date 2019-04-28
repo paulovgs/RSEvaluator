@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * @author Paulo (2018-06-02)
+ * @author Paulo
  */
 public abstract class ContentBasedDBSkeleton extends DataBase{
     
@@ -19,10 +19,12 @@ public abstract class ContentBasedDBSkeleton extends DataBase{
     protected static ContentBasedDBSkeleton instance;
     
     public ContentBasedDBSkeleton(String dbName) {
+        
         super(dbName);
         user_id = USER_ID;
         item_id = ITEM_ID;
         item_table = ITEM_TABLE;
+        
     }
          
     public abstract ResultSet getCBCandidatesWithVector(int user_id, int limit_of_items) throws SQLException;
@@ -56,21 +58,45 @@ public abstract class ContentBasedDBSkeleton extends DataBase{
     public abstract ResultSet getUsersFromTagsNotInUsers() throws SQLException;
     
     /*
-    * MÉTODOS DE TAG_OLD========================
+    * ==== Old tag structure methods ===
+    * Here we have useful methods for tags processing. They were replaced by a new structure though.
+    * It may be deleted, just need to be sure that will not be used anymore
     */
     
+    /**
+     * @deprecated 
+     */
     public abstract void insertUserVector(int item_id, String tag, double tfidf) throws SQLException;
     
+    /**
+     * @deprecated 
+     */
     public abstract boolean hasItemAxis(int item_id, String attribute) throws SQLException;
     
+    /**
+     * @deprecated 
+     */
     public abstract boolean hasUserAxis(int user_id, String attribute) throws SQLException;
     
+    /**
+     * @deprecated 
+     */
     public abstract ResultSet getItemAndTags() throws SQLException;
     
+    /**
+     * @deprecated 
+     */
     public abstract ResultSet getUserAndTags() throws SQLException;
     
+    /**
+     * @deprecated 
+     */
     public abstract void updateFormatedString(String table, String target_column, String new_target, String pk1, String pk2,
                                               int fpk1, int fpk2, String target) throws SQLException;
+    
+    /**
+     * @deprecated 
+     */
     public abstract ResultSet getGlobalTagList() throws SQLException;
     
     

@@ -1,7 +1,7 @@
 package evaluator;
 
 /**
- * @author Paulo (03/20/2018)
+ * @author Paulo
  */
 public enum TimeDistEnum {
     

@@ -23,7 +23,7 @@ import utils.User;
 import utils.Utils;
 
 /**
- * @author Paulo (09/18/2017)
+ * @author Paulo
  * todo: adaptação no CF para funcionar também com dados unários.Ver Curso 2 Semana 3 Cursera
  * todo: ver a possibilidade de adicionar explicações nos RS. (porque vc comprou...) Ver Curso 2 Semana 4 Cursera
  */
@@ -164,9 +164,9 @@ public abstract class CollaborativeFiltering extends Recommender{
     
     
     /**
+     * Calcula a similaridade entre todo par item-item e armazena no banco de dados
      * @return 
      * @throws java.sql.SQLException 
-     * Calcula a similaridade entre todo par item-item e armazena no banco de dados
      */
     public static boolean ItemItemPearsonSimilarity() throws SQLException{
         
@@ -277,7 +277,10 @@ public abstract class CollaborativeFiltering extends Recommender{
         return true;
     }
     
-        // scale in a 0 - 1 range
+    /**
+     * Scale in a 0 - 1 range
+     * @throws SQLException 
+     */
     public static void normalizeItemVectorSpace()throws SQLException{
         
         GenericSkeleton gen = GenericSkelFactory.getInstance();

@@ -8,11 +8,11 @@ import java.util.logging.Logger;
 import utils.Config;
 
 /**
+ * Methods to deal with databases, like open and close the connection.
  * @author Paulo 
  */
 public abstract class DataBase {
     
-    //Connection dbCon; 
     public Connection dbCon; 
     protected static String url = Config.DB_URL;
     protected static String username = Config.DB_USERNAME;

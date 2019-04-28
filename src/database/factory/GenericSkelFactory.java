@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Paulo (06/02/2018)
+ * @author Paulo
  */
 public abstract class GenericSkelFactory {
 

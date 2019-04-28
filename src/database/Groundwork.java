@@ -39,7 +39,6 @@ public class Groundwork extends DataBase {
         }
         
     }
-    
 
     
     public boolean createDatabase(String dbName){
@@ -381,7 +380,6 @@ public class Groundwork extends DataBase {
         
         
     }
-    
     
     public int importData(String table, String folder, String file_name, char delimiter, String columns){
         

@@ -3,8 +3,7 @@ package evaluator;
 import utils.RSELogger;
 
 /**
- *
- * @author Paulo (10/25/2017)
+ * @author Paulo
  */
 public class Factor {
 
@@ -31,6 +30,13 @@ public class Factor {
         
     }
     
+    /**
+     * Configures the multi level part of the experiment
+     * @param min First level the factor will assume
+     * @param maxv Last level the factor will assume
+     * @param stepv Between min and maxv, the factor will assume multiple stepv values, starting from min
+     *              For ex: setMultiLevel(3, 15, 4) leads to 4 levels: 3, 7, 11 and 15
+     */
     public static void setMultiLevel(int min, int maxv, int stepv){
         
        multi_lvl_starter = min; // will be saved on db
@@ -43,7 +49,6 @@ public class Factor {
    
     public static Factor createMultiLevelFactor(FactorTypesEnum factor_type){
         
-        //int qtd = Math.floorDiv(max, step);
         int qtd = Math.floorDiv((max - multi_lvl_starter), step) + 1;
         int step2 = multi_lvl_starter;
         String[] levels = new String[qtd];
@@ -52,11 +57,6 @@ public class Factor {
             levels[i] = Integer.toString(step2);
             step2 += step;
         }
-        
-        /*System.out.println(qtd);
-        for(int i = 0; i < levels.length; i++){
-            System.out.println(levels[i]);
-        }*/
         
         return new Factor(factor_type, levels);
         
@@ -100,7 +100,6 @@ public class Factor {
         }
         
     }
-    
    
     public static void setLevel(int lvl){ level = lvl; }
     

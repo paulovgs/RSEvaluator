@@ -4,7 +4,7 @@ import recommender.algorithm.Recommender;
 import utils.User;
 
 /**
- * @author Paulo (09/18/2017)
+ * @author Paulo
  */
 public abstract class RecommenderFactory {
     

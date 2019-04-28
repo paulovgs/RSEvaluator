@@ -5,8 +5,7 @@ import recommender.algorithm.Recommender;
 import utils.User;
 
 /**
- *
- * @author Paulo (04/16/2018)
+ * @author Paulo
  */
 public class HybridFactory extends RecommenderFactory{
     

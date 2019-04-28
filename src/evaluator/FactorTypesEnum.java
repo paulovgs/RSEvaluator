@@ -4,7 +4,7 @@ import database.Evaluation;
 import java.sql.SQLException;
 
 /**
- * @author Paulo (10/26/2017)
+ * @author Paulo
  */
 public enum FactorTypesEnum{ // deve começar de 1 porque 0 indica um SQL null no composed_factor_type
     

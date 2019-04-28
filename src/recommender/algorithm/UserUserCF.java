@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import utils.User;
 
 /**
- * @author Paulo (09/18/2017)
+ * @author Paulo
  */
 public class UserUserCF extends CollaborativeFiltering{
     
@@ -21,10 +21,6 @@ public class UserUserCF extends CollaborativeFiltering{
 
     }
     
-     /**
-     * @return 
-     * @throws java.sql.SQLException
-     */
     @Override
     public LinkedHashMap<Integer, Float> score() throws SQLException{  
                 
@@ -93,8 +89,6 @@ public class UserUserCF extends CollaborativeFiltering{
                 
          }
         
-       // System.out.println("size = "+recommendation_list.size() + " => "+recommendation_list);
-        
         return recommendation_list;
                 
     }
@@ -102,7 +96,6 @@ public class UserUserCF extends CollaborativeFiltering{
     @Override
     public void alternativeScore(int items_qtd, LinkedHashMap<Integer, Float> recommendation_list) throws SQLException{
         
-      //  GenericSkeleton gen = GenericSkelFactory.getInstance();
         ResultSet items = gen.getNonPersonalizedScore(items_qtd, user.getID());
         
         while(items.next()){
@@ -117,6 +110,4 @@ public class UserUserCF extends CollaborativeFiltering{
         }
         
     }
-    
-    
 }

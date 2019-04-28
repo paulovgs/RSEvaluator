@@ -5,7 +5,7 @@ import recommender.algorithm.UserUserCF;
 import utils.User;
 
 /**
- * @author Paulo (09/18/2017)
+ * @author Paulo
  */
 public class UserUserCFFactory extends RecommenderFactory{
     

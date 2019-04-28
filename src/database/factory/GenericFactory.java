@@ -5,7 +5,7 @@ import database.skeleton.GenericSkeleton;
 
 /**
  *
- * @author Paulo (06/02/2018)
+ * @author Paulo
  */
 public class GenericFactory extends GenericSkelFactory{
     

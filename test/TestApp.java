@@ -1,4 +1,4 @@
-import app.App;
+import app.Menu;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -9,10 +9,10 @@ import static org.junit.Assert.*;
  */
 public class TestApp {
     
-    App app;
+    Menu app;
     
     public TestApp() {
-        app = new App();
+        app = new Menu();
     }
     
     @Before

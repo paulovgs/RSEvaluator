@@ -31,7 +31,6 @@ public class Generic extends GenericSkeleton{
         return (Generic) instance;
     }
     
-    // for test purposes
     @Override
     public void executeUpdate(String query) throws SQLException{
         
@@ -39,13 +38,6 @@ public class Generic extends GenericSkeleton{
         stm.executeUpdate(query);
         
     }
-    
-    /*@Override
-    public void deleteItemSimilarityPersonalized(int item_x) throws SQLException{
-        Statement stm = dbCon.createStatement();
-        stm.executeQuery("delete from item_similarity where item_x = "+item_x+" and item_y not in "
-                        + "(select item_y from item_similarity where item_x = "+item_x+" order by similarity desc limit 250)" );
-    }*/
     
     @Override
     public ResultSet executeQuery(String query) throws SQLException{
@@ -69,7 +61,7 @@ public class Generic extends GenericSkeleton{
         
     }
     
-    @Override // getAllUserIDsFromUsers
+    @Override
     public ResultSet getAllUserIDs() throws SQLException{
         
         Statement stm = dbCon.createStatement();
@@ -99,7 +91,7 @@ public class Generic extends GenericSkeleton{
         
     }
 
-    @Override // getUserRatingsTestSet
+    @Override 
     public ResultSet getUserTestSet(int user_id) throws SQLException{
     
         Statement st = dbCon.createStatement();
@@ -136,7 +128,7 @@ public class Generic extends GenericSkeleton{
         
     }
     
-    @Override // update the average rating from users or from items
+    @Override
     public void updateAverageRating(String table, String avg_type, float avg, int id) throws SQLException{
         
         Statement st = dbCon.createStatement();
@@ -162,7 +154,7 @@ public class Generic extends GenericSkeleton{
             
     }
     
-    @Override // getAllMovies NAO TINHA ORDER BY MOVIE ID*****
+    @Override
     public ResultSet getAllItems() throws SQLException{
         
         Statement st = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -186,7 +178,6 @@ public class Generic extends GenericSkeleton{
 
     }
     
-    // maybe esse e getLimitedH podem ser um só
     @Override
     public ResultSet getHistoryFromUser(int user_id) throws SQLException{
         
@@ -196,19 +187,6 @@ public class Generic extends GenericSkeleton{
         );
         
     }
-    
-   /* @Override
-    public ResultSet getHistory2FromUser(int user_id) throws SQLException{
-        
-        Statement st = dbCon.createStatement();
-               
-        return st.executeQuery(
-                "select "+item_id+", global_avg_rt from "+item_table+" where "+item_id+" in"
-                + " (select "+item_id+" from ratings where "+this.user_id+" = " +user_id+ " and is_history = true)"
-                + " order by random()"
-        );
-        
-    }*/
     
     @Override
     public int getTotalNOfItems() throws SQLException{
@@ -241,9 +219,8 @@ public class Generic extends GenericSkeleton{
         );
         
     }
-    
+
     @Override
-    // 25% fica como test set; 75% como histórico
     public void splitRatings75(int user_id) throws SQLException{
         
         Statement st = dbCon.createStatement();
@@ -254,7 +231,6 @@ public class Generic extends GenericSkeleton{
         
     }
     
-    // seta o historico de todo mundo para true
     @Override
     public void resetHistory() throws SQLException{
         
@@ -265,7 +241,7 @@ public class Generic extends GenericSkeleton{
     
     
     
-    @Override //updateTestSetFromRatings
+    @Override
     public void updateIsHistory(int user_id, int item_id, boolean is_history) throws SQLException{
         
         Statement st = dbCon.createStatement();
@@ -287,7 +263,7 @@ public class Generic extends GenericSkeleton{
         
     }
     
-    @Override // setOverallAverage
+    @Override
     public void setNonPersonalizedScore(float score, int item_id) throws SQLException{
         
         Statement st = dbCon.createStatement();

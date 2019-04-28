@@ -7,41 +7,51 @@ import java.util.logging.Logger;
 import static utils.Config.INVALID_NUMBER;
 
 /**
- * Console user interface
+ * Console user interface. Here one can access the main features of RSE. Will be replaced by a GUI
  * @author Paulo Vicente
  */
-public class App {
+public class Menu {
     
-    private boolean exit;
+    private boolean exit_program;
     private String callbackMessage;
-    private String op_sys;
+    private final String op_sys;
     
-    public App(){
-        exit = false;
+    /**
+     * Menu constructor
+     */
+    public Menu(){
+        exit_program = false;
         callbackMessage = "";
         op_sys = System.getProperty("os.name").toLowerCase();
     }
     
-    public static void main(String[] args) {
+    /**
+     * Main method. Starts the console interface
+     */
+    public static void main() {
         
-        App app = new App();
-        app.clear();
+        Menu menu = new Menu();
+        menu.clear(); 
         
-        while(!app.exit){
+        while(!menu.exit_program){
             
-            app.printHeader();
-            app.printMenu();
-            System.out.println("\n" + app.callbackMessage);
-            int option = app.getInput();
-            app.performAction(option);
+            menu.printHeader();
+            menu.printMenu();
+            System.out.println("\n" + menu.callbackMessage);
             
-            if(!app.exit) // exit can be changed into performAction method
-                app.clear();
+            int option = menu.getInput();
+            menu.performAction(option);
+            
+            if(!menu.exit_program) // exit_program can be changed into performAction method
+                menu.clear();
             
         }
 
     }
     
+    /**
+     * Prints a header on the console
+     */
     private void printHeader(){
             System.out.println("|===========================================================================|");
             System.out.println("|                   Recommender Systems Evaluator                           |");
@@ -49,6 +59,9 @@ public class App {
         
     }
     
+    /**
+     * Prints the main menu
+     */
     private void printMenu(){
         System.out.println("[1] Multi Factorial Experiment");
         System.out.println("[2] Multi Level Experiment");
@@ -59,63 +72,21 @@ public class App {
         System.out.println("[7] Histograms");
         System.out.println("[8] Quit");
     }
-    
-    private int getInput(){
-        int option = -1;
-        Scanner scan = new Scanner(System.in);
         
-        while(option < 0 || option > 8){
-            try{
-                System.out.print("\nEnter your selection:");
-                option = Integer.parseInt(scan.nextLine());
-            }catch(NumberFormatException ex){
-                System.err.println("Invalid option. Please try again");
-            }
-        }
-        
-        return option;
-    }
-    
-    private int getIntegerInput(String input_message){
-
-        Scanner scan = new Scanner(System.in);
-        int input = INVALID_NUMBER;
-                
-        input_message = (input_message.isEmpty()) ? "Enter with the evaluation ID:" : input_message;
-        System.out.print("\n"+input_message);
-        
-        try{
-            input = Integer.parseInt(scan.nextLine());
-        }catch(NumberFormatException ex){
-            registerCallbackMessage("Error: Evaluation ID must be a valid integer.");
-        }
-        
-        return input;
-    }
-    
-    private String getInput(String input_message){
-        Scanner scan = new Scanner(System.in);
-        System.out.print("\n"+input_message);
-        String input = scan.nextLine();        
-        return input;
-    }
-    
-    private String getBooleanInput(String input_message){
-        Scanner scan = new Scanner(System.in);
-        System.out.print("\n"+input_message);
-        String input = scan.nextLine();  
-        
-        if(input.length() != 1)
-            registerCallbackMessage("Please choose a valid option.");
-        
-        return input;
-    }
-        
-    public void registerCallbackMessage(String message){
+    /**
+     * This message will be displayed after some execution happens. Should be a success/fail/info message to the user 
+     * @param message The message to be displayed
+     */
+    private void registerCallbackMessage(String message){
         callbackMessage = message;
     }
     
+    /**
+     * Given a menu choice, performs an appropriated action.
+     * @param option The selected chosen
+     */
     private void performAction(int option){
+        
         RSE rse = new RSE();
         int evaluation_id = INVALID_NUMBER;
         String callbackMsg = "";
@@ -129,7 +100,7 @@ public class App {
         switch(option){
             case 1:
                 
-                String exp_name = getInput("Experiment name:");
+                String exp_name = getStringInput("Experiment name:");
                 String warmup = getBooleanInput("Warmup (Y/N):");
                 
                 if(warmup.charAt(0) == 'Y' || warmup.charAt(0) == 'N'){
@@ -145,7 +116,7 @@ public class App {
                 break;
             case 2:
 
-                String multi_exp_name = getInput("Experiment name:");
+                String multi_exp_name = getStringInput("Experiment name:");
                 String warmup_multi = getBooleanInput("Warmup (Y/N):");
                 
                 if(warmup_multi.charAt(0) == 'Y' || warmup_multi.charAt(0) == 'N'){
@@ -180,7 +151,7 @@ public class App {
                 callbackMsg = rse.histo(evaluation_id);
                 break;
             case 8:
-                exit = true;
+                exit_program = true;
                 break;
             default:
                 System.err.println("An unkwnow error has occurred");
@@ -192,9 +163,9 @@ public class App {
     }
     
     /**
-     * Must be tested in other OS rather than windows
+     * Cleans the console. Must be tested in other OS rather than windows
      */
-    public void clear(){
+    private void clear(){
         try{
             
             if(isWindows(op_sys)){
@@ -204,14 +175,90 @@ public class App {
             }
             
         } catch (IOException | InterruptedException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Checks if the OS is Windows
+     * @param os the property "name" of the current operating system
+     * @return true for windows, false otherwise
+     */
     public static boolean isWindows(String os){
         return (os.contains("win")); 
     }
-  
+    
+    /**
+     * Scans the initial input. Should be a valid integer between a range of possible actions.
+     * @return The scanned option if valid. Otherwise, returns the constant INVALID_NUMBER.
+     */
+    private int getInput(){
+        
+        int option = INVALID_NUMBER;
+        Scanner scan = new Scanner(System.in);
+        
+        while(option < 0 || option > 8){
+            try{
+                System.out.print("\nEnter your selection:");
+                option = Integer.parseInt(scan.nextLine());
+            }catch(NumberFormatException ex){
+                System.err.println("Invalid option. Please try again");
+            }
+        }
+        
+        return option;
+    }
+    
+    /**
+     * Scans an integer input.
+     * @param input_message A personalized message to be displayed on console. If empty, will display the standard message
+     * @return The scanned and integer option if valid. Otherwise, returns the constant INVALID_NUMBER.
+     */
+    private int getIntegerInput(String input_message){
+
+        Scanner scan = new Scanner(System.in);
+        int input = INVALID_NUMBER;
+                
+        input_message = (input_message.isEmpty()) ? "Enter with the evaluation ID:" : input_message;
+        System.out.print("\n"+input_message);
+        
+        try{
+            input = Integer.parseInt(scan.nextLine());
+        }catch(NumberFormatException ex){
+            registerCallbackMessage("Error: Evaluation ID must be a valid integer.");
+        }
+        
+        return input;
+    }
+    
+    /**
+     * Scans an input in string format
+     * @param input_message The message to be displayed on console.
+     * @return The scanned string.
+     */
+    private String getStringInput(String input_message){
+        
+        Scanner scan = new Scanner(System.in);
+        System.out.print("\n"+input_message);
+        String input = scan.nextLine();        
+        return input;
+    }
+    
+    /**
+     * Scans an input in the format of Y/N questions.
+     * @param input_message The message to be displayed on console.
+     * @return A single character string
+     */
+    private String getBooleanInput(String input_message){
+        
+        Scanner scan = new Scanner(System.in);
+        System.out.print("\n"+input_message);
+        String input = scan.nextLine();  
+        
+        if(input.length() != 1)
+            registerCallbackMessage("Please choose a valid option.");
+        
+        return input;
+    }
    
 }
-
