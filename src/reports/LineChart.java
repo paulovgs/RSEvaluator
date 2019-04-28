@@ -41,7 +41,7 @@ public class LineChart extends Results{
         
     }
     
-    public static void generate(String path, String title, int evaluation_id, int rv_id, String y){
+    public static String generate(String path, String title, int evaluation_id, int rv_id, String y){
         
         try{
                 
@@ -49,11 +49,13 @@ public class LineChart extends Results{
 
             chart.pack( );
             RefineryUtilities.centerFrameOnScreen( chart );
-            chart.setVisible( true );                   
+            chart.setVisible( true ); 
+            return "Line charts were successfully created.";
                                 
         }catch (SQLException ex) {
-            System.err.println("ERROR: Can't generate line chart of " + title);
+            //System.err.println("ERROR: Can't generate line chart of " + title);
             Logger.getLogger(LineChart.class.getName()).log(Level.SEVERE, null, ex);
+            return "ERROR: Can't generate line chart of " + title;
         }
         
     }

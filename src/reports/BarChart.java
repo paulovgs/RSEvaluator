@@ -11,13 +11,13 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import org.jfree.chart.ChartPanel; 
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart; 
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 import org.jfree.data.statistics.StatisticalCategoryDataset;
-import org.jfree.ui.ApplicationFrame; 
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
@@ -30,7 +30,7 @@ import org.jfree.ui.RefineryUtilities;
 * Create a bar chart representation of the results
 * @author Paulo
 */
-public class BarChart extends ApplicationFrame{
+public class BarChart extends JFrame{
     
     public BarChart( String path, String applicationTitle , String chartTitle, int evaluation_id, int rv_id, String y_axis) throws SQLException {
         
@@ -185,7 +185,7 @@ public class BarChart extends ApplicationFrame{
         
     }
     
-    public static void generate(String path, String title, int evaluation_id, int rv_id, String y){
+    public static String generate(String path, String title, int evaluation_id, int rv_id, String y){
         
         try{
                 
@@ -194,16 +194,17 @@ public class BarChart extends ApplicationFrame{
             chart.pack( );        
             RefineryUtilities.centerFrameOnScreen( chart );        
             chart.setVisible( true );
+            return "Bar Charts were successfully generated.";
             
                                 
         }catch (SQLException ex) {
-            System.err.println("ERROR: Can't generate bar chart of "+title);
             Logger.getLogger(BarChart.class.getName()).log(Level.SEVERE, null, ex);
+            return "ERROR: Can't generate bar chart of "+title;
         }
         
     }
     
-    public static void generate2(String path, String title, String y_axis, int evaluation_id1, int evaluation_id2, int rv_id, int[] filter){
+    public static String generate2(String path, String title, String y_axis, int evaluation_id1, int evaluation_id2, int rv_id, int[] filter){
         
         try{
                 
@@ -212,10 +213,12 @@ public class BarChart extends ApplicationFrame{
                 chart.pack( );        
                 RefineryUtilities.centerFrameOnScreen( chart );        
                 chart.setVisible( true );
+                return "Comparative charts were successfully generated.";
                 
         }catch (SQLException ex) {
-            System.err.println("ERROR: Can't generate bar chart of "+title);
+            //System.err.println("ERROR: Can't generate bar chart of "+title);
             Logger.getLogger(BarChart.class.getName()).log(Level.SEVERE, null, ex);
+            return "ERROR: Can't generate bar chart of "+title;
         }
         
     }

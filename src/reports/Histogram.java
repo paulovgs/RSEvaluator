@@ -58,22 +58,26 @@ public class Histogram {
     }
     
 
-    public static void generate(int evaluation_id){
+    public static String generate(int evaluation_id){
         
         try {
             
             Evaluation eval = Evaluation.getInstance();
             ResultSet ev = eval.getExperimentIDs(evaluation_id);
             
-            while(ev.next()){
-                
+            if(ev.next() == false)
+               return "No histograms were generated for evaluation_id "+evaluation_id;
+            
+            do{
                 Histogram histogram = new Histogram(ev.getInt("experiment_id"), evaluation_id, ev.getFloat("rv_value"));
                 histogram.create();
+            }while(ev.next());
                 
-            }
+            return "Histograms were successfully saved!";
             
         } catch (SQLException ex) {
             Logger.getLogger(Histogram.class.getName()).log(Level.SEVERE, null, ex);
+            return "Error when creating histograms.";
         }
         
     }

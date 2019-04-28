@@ -49,6 +49,8 @@ public class Config {
    
     public static final int NON_PER_LIMIT = 1000;
     
+    // invalid number constant
+    public static final int INVALID_NUMBER = -1;
     
     public static void setFactors(Benchmarker bcmk){
                
@@ -66,12 +68,12 @@ public class Config {
        // /*
        
         //Factor workload = fillFactor("300", "750", T_WORKLOAD);      
-        Factor workload = fillFactor("50", "75", T_WORKLOAD);      
-        Factor cand_alter = fillFactor("30", "60", T_CANDIDATES_SIZE);      
+        Factor workload = fillFactor("30", "35", T_WORKLOAD);      
+        Factor cand_alter = fillFactor("25", "40", T_CANDIDATES_SIZE);      
         Factor alternative = fillFactor("false", "true", T_ALTERNATIVE_RECOMMENDATION); 
         
-        T_RECOMMENDATION_LIST_LENGTH.setDefault("40");
-        T_NEIGHBOORHOOD_SIZE.setDefault("25");
+        T_RECOMMENDATION_LIST_LENGTH.setDefault("10");
+        T_NEIGHBOORHOOD_SIZE.setDefault("20");
 
         cand_alter.compose(alternative);
         

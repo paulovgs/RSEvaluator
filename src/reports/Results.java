@@ -4,15 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
-import org.jfree.ui.ApplicationFrame;
 
 /**
  * General methods to deal with graph results. 
  * @author Paulo
  */
-public class Results extends ApplicationFrame{
+public class Results extends JFrame{
     
     String applicationTitle;
     String chartTitle;

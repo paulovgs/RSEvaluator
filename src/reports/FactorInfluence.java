@@ -339,17 +339,19 @@ public class FactorInfluence {
    
     }
     
-    public static void generatePieChart(String path, int rv_id, String name){
+    public static String generatePieChart(String path, int rv_id, String name){
         
         try{
                 
                 FactorInfluence fi = new FactorInfluence(rv_id, name, path);                
                 fi.factorsWeight();
                 fi.pieChart3D();
+                return "Factor influences were successfully generated.";
             
         }catch (IOException | SQLException ex) {
-            System.err.println("ERROR: Can't generate the factor influence chart for "+name);
+            //System.err.println("ERROR: Can't generate the factor influence chart for "+name);
             Logger.getLogger(FactorInfluence.class.getName()).log(Level.SEVERE, null, ex);
+            return "ERROR: Can't generate the factor influence chart for "+name;
         }
         
         

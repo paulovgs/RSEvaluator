@@ -1,43 +1,44 @@
 package app;
 
-import utils.Config;
-import static utils.Config.CONFIDENCE_INTERV;
-import database.Evaluation;
-import evaluator.Benchmarker;
-import evaluator.Factor;
-import evaluator.FactorTypesEnum;
-import evaluator.ResponseVariable;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.sql.ResultSet;
-import java.util.Scanner;
-import reports.BarChart;
-import reports.Histogram;
-import utils.ConsoleLogger;
-import utils.Utils;
+import static utils.Config.INVALID_NUMBER;
 
 /**
+ * Console user interface
  * @author Paulo Vicente
  */
 public class App {
     
     private boolean exit;
+    private String callbackMessage;
+    private String op_sys;
     
     public App(){
         exit = false;
+        callbackMessage = "";
+        op_sys = System.getProperty("os.name").toLowerCase();
     }
     
     public static void main(String[] args) {
         
-            App app = new App();
-            app.printHeader();
-            while(!app.exit){
-                app.printMenu();
-                int option = app.getInput();
-                app.performAction(option);
-            }
+        App app = new App();
+        app.clear();
+        
+        while(!app.exit){
             
+            app.printHeader();
+            app.printMenu();
+            System.out.println("\n" + app.callbackMessage);
+            int option = app.getInput();
+            app.performAction(option);
+            
+            if(!app.exit) // exit can be changed into performAction method
+                app.clear();
+            
+        }
 
     }
     
@@ -49,18 +50,21 @@ public class App {
     }
     
     private void printMenu(){
-        System.out.println("\n[1] Multi Factorial Experiment");
+        System.out.println("[1] Multi Factorial Experiment");
         System.out.println("[2] Multi Level Experiment");
-        System.out.println("[3] Show Graphs");
-        System.out.println("[4] Show Histogram");
-        System.out.println("[5] Quit");
+        System.out.println("[3] Bar Charts");
+        System.out.println("[4] Factor Influence");
+        System.out.println("[5] Line Charts");
+        System.out.println("[6] Comparative Charts");
+        System.out.println("[7] Histograms");
+        System.out.println("[8] Quit");
     }
     
     private int getInput(){
         int option = -1;
         Scanner scan = new Scanner(System.in);
         
-        while(option < 0 || option > 5){
+        while(option < 0 || option > 8){
             try{
                 System.out.print("\nEnter your selection:");
                 option = Integer.parseInt(scan.nextLine());
@@ -72,149 +76,142 @@ public class App {
         return option;
     }
     
+    private int getIntegerInput(String input_message){
+
+        Scanner scan = new Scanner(System.in);
+        int input = INVALID_NUMBER;
+                
+        input_message = (input_message.isEmpty()) ? "Enter with the evaluation ID:" : input_message;
+        System.out.print("\n"+input_message);
+        
+        try{
+            input = Integer.parseInt(scan.nextLine());
+        }catch(NumberFormatException ex){
+            registerCallbackMessage("Error: Evaluation ID must be a valid integer.");
+        }
+        
+        return input;
+    }
+    
+    private String getInput(String input_message){
+        Scanner scan = new Scanner(System.in);
+        System.out.print("\n"+input_message);
+        String input = scan.nextLine();        
+        return input;
+    }
+    
+    private String getBooleanInput(String input_message){
+        Scanner scan = new Scanner(System.in);
+        System.out.print("\n"+input_message);
+        String input = scan.nextLine();  
+        
+        if(input.length() != 1)
+            registerCallbackMessage("Please choose a valid option.");
+        
+        return input;
+    }
+        
+    public void registerCallbackMessage(String message){
+        callbackMessage = message;
+    }
+    
     private void performAction(int option){
+        RSE rse = new RSE();
+        int evaluation_id = INVALID_NUMBER;
+        String callbackMsg = "";
+        
+        if(option >= 3 && option <= 7){ // options that need an evaluation id
+            evaluation_id = getIntegerInput("");
+            if(evaluation_id == INVALID_NUMBER)
+                return;
+        }
+        
         switch(option){
             case 1:
-                exp();
+                
+                String exp_name = getInput("Experiment name:");
+                String warmup = getBooleanInput("Warmup (Y/N):");
+                
+                if(warmup.charAt(0) == 'Y' || warmup.charAt(0) == 'N'){
+                    
+                    boolean warm_up = (warmup.charAt(0) == 'Y');
+                    int replicas = getIntegerInput("Enter the number of replicas [0 for automatic search]:");
+                    callbackMsg = rse.exp(exp_name, warm_up, replicas);
+                    
+                }else{
+                    callbackMsg = "Please choose a valid option.";
+                }
+
                 break;
             case 2:
-                multiLvlExp();
+
+                String multi_exp_name = getInput("Experiment name:");
+                String warmup_multi = getBooleanInput("Warmup (Y/N):");
+                
+                if(warmup_multi.charAt(0) == 'Y' || warmup_multi.charAt(0) == 'N'){
+                    
+                    boolean warm_up = (warmup_multi.charAt(0) == 'Y');
+                    int replicas = getIntegerInput("Enter the number of replicas [0 for automatic search]:");
+                    callbackMsg = rse.multiLvlExp(multi_exp_name, warm_up, replicas);
+                    
+                }else{
+                    callbackMsg = "Please choose a valid option.";
+                }
                 break;
             case 3:
-                graphs();
+                callbackMsg = rse.graphs(evaluation_id, INVALID_NUMBER, 1, op_sys);
                 break;
             case 4:
-                histo();
+                callbackMsg = rse.graphs(evaluation_id, INVALID_NUMBER, 2, op_sys);
                 break;
             case 5:
+                callbackMsg = rse.graphs(evaluation_id, INVALID_NUMBER, 3, op_sys);
+                break;
+            case 6:
+               
+                int id_comp = getIntegerInput("Second evaluation ID:");
+                if(id_comp == INVALID_NUMBER)
+                    return;
+                
+                callbackMsg = rse.graphs(evaluation_id, id_comp, 4, op_sys);
+                
+                break;
+            case 7:
+                callbackMsg = rse.histo(evaluation_id);
+                break;
+            case 8:
                 exit = true;
                 break;
             default:
                 System.err.println("An unkwnow error has occurred");
                 
         }
+
+        registerCallbackMessage(callbackMsg);
+
     }
     
-    private void exp() {
-        
+    /**
+     * Must be tested in other OS rather than windows
+     */
+    public void clear(){
         try{
             
-            double ini = System.currentTimeMillis();
-            
-            FactorTypesEnum.persistFactorTypes();
-            ResponseVariable.persistResponseVariables();
-            
-            Evaluation evaluation = Evaluation.getInstance();
-            int id = evaluation.saveEvaluation("Testing", CONFIDENCE_INTERV);
-            
-            Benchmarker bcmk = Benchmarker.getInstance(); 
-            bcmk.settings(CONFIDENCE_INTERV, id);
-            
-            ConsoleLogger logger = new ConsoleLogger();
-            logger.writeEntry("Evaluation id: "+id);
-
-          //  bcmk.warmUp();
-            
-            Config.setFactors(bcmk);
-            bcmk.persistFactors();
-            Config.setResponseVariables(); // diz quais serão salvas
-
-            bcmk.setNumberOfReplicas(3);
-            //bcmk.pilotExperiment();
-          //  bcmk.pilotExperiment2();
-            bcmk.experiment(true);
-            
-            logger.writeEntry("Experimento Realizado Com Sucesso!!!!");
-            logger.writeEntry("Tempo de execução: " + (System.currentTimeMillis() - ini)/1000 + " segundos");
-            
-
-        }  catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        
-    }
-    
-    private void histo() {
-        
-        int eval_id = 475;
-        Histogram.generate(eval_id);
-    }
-    
-    private void graphs(){
-
-        try {
-            
-            int id = 463, id2 = 464;
-            
-            Benchmarker bcmk = Benchmarker.getInstance();
-            bcmk.settings(CONFIDENCE_INTERV, id);
-
-            Utils.makeDir(Integer.toString(id));
-            String path = "Experiments/"+id; //Linux
-            //String path = "Experiments\\" + id; //Windows
-
-            Evaluation evaluation = Evaluation.getInstance();
-            ResultSet rvar = evaluation.getResponseVariables(id);
-
-            int[] filter = {0, 4, 6}; // atenção: ESSES VALORES CORRESPONDEM AOS EXPERIMENT_IDS 1,3 E 5!!!! p/todos colocar filter = new int[0]
-
-            while(rvar.next()){
-
-                int rv_id = rvar.getInt("rv_id");
-                String rv_name = rvar.getString("rv_name");
-           //     FactorInfluence.generatePieChart(path, rv_id, rv_name);
-                 BarChart.generate(path, rv_name, id, rv_id, rvar.getString("y_axis"));
-              //  BarChart.generate2(path, rv_name, rvar.getString("y_axis"), id, id2, rv_id, filter);
-           //     LineChart.generate(path, rv_name, id, rv_id, rvar.getString("y_axis"));
-
+            if(isWindows(op_sys)){
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            }else{
+                Runtime.getRuntime().exec("clear");
             }
-                                           
-        } catch (SQLException ex) {
+            
+        } catch (IOException | InterruptedException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-    }
-    
-    private void multiLvlExp() {
-        
-        try{
-            
-            double ini = System.currentTimeMillis();
-            
-            FactorTypesEnum.persistFactorTypes();
-            ResponseVariable.persistResponseVariables();
-            Factor.setMultiLevel(3, 15, 2);
-            
-            Evaluation evaluation = Evaluation.getInstance();
-            int id = evaluation.saveEvaluation("Content-Based Multinível Teste", CONFIDENCE_INTERV);
-            
-            Benchmarker bcmk = Benchmarker.getInstance(); 
-            bcmk.settings(CONFIDENCE_INTERV, id);
-            
-            ConsoleLogger logger = new ConsoleLogger();
-            logger.writeEntry("Evaluation id: "+id);
-
-            bcmk.warmUp();
-            
-            Config.setFactors(bcmk);
-            bcmk.persistFactors();
-            Config.setResponseVariables(); // diz quais serão salvas
-
-            bcmk.setNumberOfReplicas(11);
-            //bcmk.pilotExperiment();
-            bcmk.oneFacMultiLvlExp(true);
-            
-            logger.writeEntry("Experimento Realizado Com Sucesso!!!!");
-            logger.writeEntry("Tempo de execução: " + (System.currentTimeMillis() - ini)/1000 + " segundos");
-
-        }  catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        
     }
 
+    public static boolean isWindows(String os){
+        return (os.contains("win")); 
+    }
+  
+   
 }
 
