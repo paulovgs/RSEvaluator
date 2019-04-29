@@ -8,22 +8,36 @@ import static evaluator.RespVarEnum.*;
 import evaluator.TimeDistEnum;
 
 /**
+ * Set RSE configurations. Will be used in the whole lifecicle of the performance evaluation.
  * @author Paulo
  */
 public class Config {
     
-    public static final String DB_NAME = "MovieLens10M";
-  //  public static final String DB_NAME = "R2Yahoo";
+    /**
+     * Generic database access configuration
+     * DB_PASS = Database password
+     * DB_URL = Database url
+     * DB_USERNAME = Database username
+     */
     public static final String DB_PASS = "pgstudent";
     public static final String DB_URL = "jdbc:postgresql://localhost:5432/";
     public static final String DB_USERNAME = "postgres";
     
+    /**
+     * Related to the database that will be evaluated
+     * DB_NAME = Name of the database (i.e. MovieLens10M; R2Yahoo).
+     * USER_ID = Label of user ID field in the DB_NAME database (i.e. user_id; person_id)
+     * ITEM_ID = Label of item ID field in the DB_NAME database (i.e. movie_id; song_id)
+     * ITEM_TABLE = Table of items name (i.e. movies; songs)
+     */
+    public static final String DB_NAME = "MovieLens10M";
     public static final String USER_ID = "user_id";
     public static final String ITEM_ID = "movie_id";
     public static final String ITEM_TABLE = "movies";
-  //  public static final String ITEM_ID = "song_id";
-  //  public static final String ITEM_TABLE = "songs";
     
+    /**
+     * 
+     */
     public static final String GEN_CLASS = "Generic";
     public static final String CF_CLASS = "CollabFiltDB";
     public static final String CB_CLASS = "ContentBasedDB";

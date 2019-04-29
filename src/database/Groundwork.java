@@ -25,22 +25,6 @@ public class Groundwork extends DataBase {
         super(dbName);
     }
     
-    public void alter(){
-        
-        try {
-            
-            Connection con = DriverManager.getConnection(url, username, password);
-            Statement st = con.createStatement();
-            //st.executeUpdate("ALTER DATABASE \"Evaluation\" RENAME TO \"Evaluation_old\";");
-            //st.executeUpdate("drop database \"R2Yahoo\";");
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-
-    
     public boolean createDatabase(String dbName){
         
         try {
@@ -51,7 +35,7 @@ public class Groundwork extends DataBase {
             return true;
             
         } catch (SQLException ex) {
-            Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
+           // Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         

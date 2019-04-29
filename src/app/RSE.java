@@ -206,13 +206,7 @@ public class RSE {
 
         
     }
-    
-    /**
-     * Checks if the evaluation database exists. Create one if do not exist yet. 
-     */
-    public void checkEvaluationDatabase(){
-        
-    }
+
 
     
 }
