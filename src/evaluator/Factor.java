@@ -107,6 +107,22 @@ public class Factor {
     
     public static int getStep(){  return step;  }
     
+    /**
+     * Auxiliary function
+     * @param val1
+     * @param val2
+     * @param factor_type
+     * @return 
+     */
+    public static Factor fillFactor(String val1, String val2, FactorTypesEnum factor_type){
+        
+        String[] val = new String[2];
+        val[0] = val1;
+        val[1] = val2;
+        return new Factor(factor_type, val);
+
+    }
+    
     
     
 }

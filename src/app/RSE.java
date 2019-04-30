@@ -182,7 +182,7 @@ public class RSE {
             if(warmup)
                 bcmk.multiLvlWarmup();
             
-            Config.setFactors(bcmk);
+            Config.setMultiLevelFactor(bcmk);
             bcmk.persistFactors();
             Config.setResponseVariables(); // diz quais serão salvas
             

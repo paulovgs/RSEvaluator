@@ -75,7 +75,7 @@ public class FactorInfluence {
         
         while(factors.next()){
             
-          Factor factor = Config.fillFactor(factors.getString("level_1"), factors.getString("level_2"),
+          Factor factor = Factor.fillFactor(factors.getString("level_1"), factors.getString("level_2"),
                                         FactorTypesEnum.valueOf( factors.getString("factor_name") ));
           
           int factor_id = factors.getInt("factor_id");

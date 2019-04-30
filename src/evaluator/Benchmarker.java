@@ -239,12 +239,12 @@ public class Benchmarker {
             int range_backup = Config.TIME_RANGE;
             Config.TIME_RANGE = 7;
 
-            Factor carga = Config.fillFactor("50", "50", T_WORKLOAD);
+            Factor carga = Factor.fillFactor("50", "50", T_WORKLOAD);
             this.addFactor(carga);
            // Factor list_size = Config.fillFactor("6", "18", T_RECOMMENDATION_LIST_LENGTH);
             //this.addFactor(list_size);  
             T_ALTERNATIVE_RECOMMENDATION.setDefault("false");
-            Factor qtd_items = Config.fillFactor("15", "30", T_CANDIDATES_SIZE);
+            Factor qtd_items = Factor.fillFactor("15", "30", T_CANDIDATES_SIZE);
             //Factor qtd_viz = Config.fillFactor("6", "18", T_NEIGHBOORHOOD_SIZE);
            // qtd_viz.compose(qtd_items);
 
