@@ -20,10 +20,33 @@
 
 ![](FlowChart.png)
 
-## Prerequisites
+## Quickstart Guide
+1. Install PostgreSQL and configure its access in utils.Config.java (look at label "Part 1")
+2. Run RSEvaluator and create an evaluation database (menu option [1])
+3. Create your test database (menu option [2]). Change the Config file Part 2
+4. Import your dataset. We don't have a menu option yet, but you can use the auxiliary functions (importData(), dropConstraint(), addForeignKey()) in database.Groundwork class.
+5. This is an offline data processing step. You should change the Config file Part 4, and use the following methods to complete some important information inside database:
+    * User.splitRatings75(); (75% as history; 25% as test set)
+    * User.computeAverageRating(true); 
+    * User.computeHistoryAverageRating();
+    * Utils.itensAverageRating();
+    * Utils.computePopularity();
+    * Utils.nonPersonalizedScore();
+    * CollaborativeFiltering.UserUserPearsonSimilarity();
+    * CollaborativeFiltering.ItemItemPearsonSimilarity();
+6. Change the Config file part 6. Runs experiments using menu options [3] and [4]
+7. After experiments, the results will be stored in the Evaluation database. Use the menu options [5] to [9] to see and interpret them.
+ 
+## Output
+After completing the experiments, RSE shows the results in various graphs. We believe that this is a more intuitive way one can have to interpret the results. Some exemples are displayed below:
 
-You will need PostgreSQL installed.
+<p float="left">
+  <img src="/ex1.png" width="250" />
+  <img src="/ex2.png" width="260" /> 
+</p>
 
-## Next updates
-* Quickstart guide
-* Documentation
+<p float="left">
+  <img src="/ex3.png" width="250" />
+  <img src="/ex4.png" width="300" />
+ <img src="/ex5.png" width="300" /> 
+</p>
