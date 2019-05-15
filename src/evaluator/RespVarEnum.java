@@ -32,6 +32,7 @@ public enum RespVarEnum {
         
         this.value = value;
         this.awake = false;
+       
         
     }
     

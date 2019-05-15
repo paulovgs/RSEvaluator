@@ -16,20 +16,28 @@ public class Config {
      * Invalid number constant
      */
     public static final int INVALID_NUMBER = -1;
-
     
+    /***********************************************************************
+     *         Part 1: Generic database access configuration               *
+     ***********************************************************************/
+
     /**
-     * Generic database access configuration
      * DB_PASS = Database password
      * DB_URL = Database url
      * DB_USERNAME = Database username
      */
-    public static final String DB_PASS = "pgstudent";
+    public static final String DB_PASS = "...";
     public static final String DB_URL = "jdbc:postgresql://localhost:5432/";
     public static final String DB_USERNAME = "postgres";
     
+    
+    
+    
+    /***********************************************************************
+     *       Part 2: Related to the database that will be evaluated        *
+     ***********************************************************************/
+    
     /**
-     * Related to the database that will be evaluated
      * DB_NAME = Name of the database (e.g. MovieLens10M; R2Yahoo).
      * USER_ID = Label of user ID field in the DB_NAME database (e.g. user_id; person_id)
      * ITEM_ID = Label of item ID field in the DB_NAME database (e.g. movie_id; song_id)
@@ -39,6 +47,11 @@ public class Config {
     public static final String USER_ID = "user_id";
     public static final String ITEM_ID = "movie_id";
     public static final String ITEM_TABLE = "movies";
+    
+    
+    /***********************************************************************
+     *       Part 3: Database classes configuration                        *
+     ***********************************************************************/
     
     /**
      * You may have different database classes with different behaviors (but they need to extend the skeleton ones). 
@@ -52,8 +65,11 @@ public class Config {
     public static final String CB_CLASS = "ContentBasedDB";
     
     
+    /***********************************************************************
+     *       Part 4: Data processing configurations                        *
+     ***********************************************************************/
+        
     /**
-     * Data processing configurations
      * STORAGED_CORRELATION Number of pearson correlations between items/users that will be stored
      * NON_PER_LIMIT Top X items retrieved sorted by its non-personalized score. X will be the NON_PER_LIMIT
      * MAX_SCALE Max value of the ratings scale.
@@ -61,9 +77,11 @@ public class Config {
     public static final int STORAGED_CORRELATION = 2000;
     public static final int NON_PER_LIMIT = 1000;
 
+    /***********************************************************************
+     *                 Part 5: Experiment Configurations                   *
+     ***********************************************************************/
     
     /**
-     * Experiment configurations
      * RECOMMENDER Algorithm to be used in the current experiment (e.g. UserUserCF; ItemItemCF; ContentBased; Hybrid)
      * DIST_TYPE Type of time distribution used (e.g. TimeDistEnum.T_ALL_AT_ONCE; TimeDistEnum.T_NORMAL_DIST)
      * TIME_RANGE Amount of time in seconds that the normal distribution will hold in each experiment
