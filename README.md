@@ -38,7 +38,7 @@
 7. After experiments, the results will be stored in the Evaluation database. Use the menu options [5] to [9] to see and interpret them.
  
 ## Output
-After completing the experiments, RSE shows the results as graphs. We believe that this is a more intuitive way to interpret them. Some exemples are displayed below:
+After completing the experiments, RSE shows the results as graphs. We believe that this is a more intuitive way to interpret them. Some examples are displayed below:
 
 <p float="left">
   <img src="/ex1.png" width="250" />
