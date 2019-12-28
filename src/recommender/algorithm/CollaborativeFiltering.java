@@ -24,8 +24,6 @@ import utils.Utils;
 
 /**
  * @author Paulo
- * todo: adaptação no CF para funcionar também com dados unários.Ver Curso 2 Semana 3 Cursera
- * todo: ver a possibilidade de adicionar explicações nos RS. (porque vc comprou...) Ver Curso 2 Semana 4 Cursera
  */
 public abstract class CollaborativeFiltering extends Recommender{
     
@@ -34,7 +32,6 @@ public abstract class CollaborativeFiltering extends Recommender{
     }
     
     /**
-     * Calcula a similaridade entre todo par user-user e armazena no banco de dados
      * @throws java.sql.SQLException
      * @return
      */
@@ -87,23 +84,24 @@ public abstract class CollaborativeFiltering extends Recommender{
                     if(/*user_u >= 20000 &&*/ user_u != user_v){
 
                         avg_v = usrSet.getFloat("global_avg_rt");
-                        ratings_v = ratings.row(user_v); // todas as ratings dadas pelo user_v
+                        ratings_v = ratings.row(user_v); 
 
                         float sum_num = 0, sum_den1 = 0, sum_den2 = 0;
 
                         for(Integer movie_id : ratings_u.keySet()){
 
-                            // numerador = soma-se apenas os itens que ambos avaliaram
+                            // numerator = only itens rated by both
                             if(ratings_u.get(movie_id) != null && ratings_v.get(movie_id) != null)
                                 sum_num += ( (ratings_u.get(movie_id) - avg_u) * (ratings_v.get(movie_id) - avg_v));
 
-                            // denominador parte 1: soma-se todos os itens que user u avaliou
+                            // denominator part 1: all itens rated by user u
                             double c = ratings_u.get(movie_id) - avg_u;
                             sum_den1 += (c*c);
 
                         }
 
-                        // denominador parte 2: soma-se todos os itens que user v avaliou
+                       
+                        // denominator part 1: all itens rated by user v
                         for(Integer movie_id : ratings_v.keySet()){
                             double d = ratings_v.get(movie_id) - avg_v;
                             sum_den2 += (d*d);
@@ -111,14 +109,14 @@ public abstract class CollaborativeFiltering extends Recommender{
 
                         Float pearson_correlation = (sum_den2 == 0 || sum_den1 == 0) ? 0 : (float) (sum_num / ( sqrt(sum_den1) * sqrt(sum_den2) ));
 
-                     //   if(pearson_correlation > 0){ // limitando para apenas correlações positivas serem salvas
+                     //   if(pearson_correlation > 0){ 
 
                             if(cfiller < STORAGED_CORRELATION){
                                 k_most_similars.put(user_v, pearson_correlation);
                                 cfiller++;
                             }else{
                                 k_most_similars = Utils.sortByValue(k_most_similars, true);
-                                // se pearson é maior do que o menor valor de k most similars
+                                
                                 if(pearson_correlation > k_most_similars.entrySet().iterator().next().getValue()){ 
                                     int key = k_most_similars.entrySet().iterator().next().getKey();
                                     k_most_similars.remove(key);
@@ -136,7 +134,7 @@ public abstract class CollaborativeFiltering extends Recommender{
                for(Integer key : k_most_similars.keySet() )
                     bulk_insert += " (" + user_u + "," + key + "," + k_most_similars.get(key) + "),";
 
-               bulk_insert = bulk_insert.substring(0, bulk_insert.length() - 1); // retira a virgula do final
+               bulk_insert = bulk_insert.substring(0, bulk_insert.length() - 1); 
                bulk_insert += ";";
 
                if(!usrSet.isLast() && !k_most_similars.isEmpty())
@@ -164,7 +162,6 @@ public abstract class CollaborativeFiltering extends Recommender{
     
     
     /**
-     * Calcula a similaridade entre todo par item-item e armazena no banco de dados
      * @return 
      * @throws java.sql.SQLException 
      */
@@ -195,7 +192,7 @@ public abstract class CollaborativeFiltering extends Recommender{
 
             item_x = itemSet.getInt(gen.getItemIDLabel());
             avg_i = itemSet.getFloat("global_avg_rt");
-            ratings_i = ratings.row(item_x); // todas as ratings dadas ao item i
+            ratings_i = ratings.row(item_x); 
             bulk_insert = "INSERT INTO item_similarity(item_x, item_y, similarity) VALUES ";
             
             itemSet.beforeFirst();
@@ -210,18 +207,18 @@ public abstract class CollaborativeFiltering extends Recommender{
                 if(item_x != item_y){
                 
                     avg_j = itemSet.getFloat("global_avg_rt");
-                    ratings_j = ratings.row(item_y); // todas as ratings dadas ao item j
+                    ratings_j = ratings.row(item_y);
                     float sum_num = 0, sum_den1 = 0, sum_den2 = 0;
                     for(Integer user_id : ratings_i.keySet()){
-                        // numerador = soma-se apenas se o usuário avaliou ambos os itens
+                       
                         if(ratings_i.get(user_id) != null && ratings_j.get(user_id) != null)
                             sum_num += ( (ratings_i.get(user_id) - avg_i) * (ratings_j.get(user_id) - avg_j));
-                        // denominador parte 1: soma-se todas as ratings, mesmo que não sejam em comum
+                     
                         double c = ratings_i.get(user_id) - avg_i;
                         sum_den1 += (c*c);
                     }
 
-                    // denominador parte 2: soma-se todos os itens que user v avaliou
+                    
                     for(Integer user_id : ratings_j.keySet()){
                         double d = ratings_j.get(user_id) - avg_j;
                         sum_den2 += (d*d);
@@ -229,14 +226,12 @@ public abstract class CollaborativeFiltering extends Recommender{
 
                     Float pearson_correlation = (sum_den2 == 0 || sum_den1 == 0) ? 0 : (float) (sum_num / ( sqrt(sum_den1) * sqrt(sum_den2) ));
                     
-                 //   if(pearson_correlation > 0){ // limitando para apenas correlações positivas serem salvas
-                        
+                 //   if(pearson_correlation > 0){ 
                         if(cfiller < STORAGED_CORRELATION){
                             k_most_similars.put(item_y, pearson_correlation);
                             cfiller++;
                         }else{
                             k_most_similars = Utils.sortByValue(k_most_similars, true);
-                            // se pearson é maior do que o menor valor de k most similars
                             if(pearson_correlation > k_most_similars.entrySet().iterator().next().getValue()){ 
                                 int key = k_most_similars.entrySet().iterator().next().getKey();
                                 k_most_similars.remove(key);
@@ -254,7 +249,7 @@ public abstract class CollaborativeFiltering extends Recommender{
            for(Integer key : k_most_similars.keySet() )
                 bulk_insert += " (" + item_x + "," + key + "," + k_most_similars.get(key) + "),";
            
-           bulk_insert = bulk_insert.substring(0, bulk_insert.length() - 1); // retira a virgula do final
+           bulk_insert = bulk_insert.substring(0, bulk_insert.length() - 1);
            bulk_insert += ";";
            
            if(!itemSet.isLast() && !k_most_similars.isEmpty())
@@ -319,7 +314,7 @@ public abstract class CollaborativeFiltering extends Recommender{
         }
     }
     
-    // pode ser unida com a query acima; precisa ser otimizada
+    // need optimization
     public static void normalizeUserVectorSpace()throws SQLException{
         
         GenericSkeleton gen = GenericSkelFactory.getInstance();
