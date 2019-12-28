@@ -25,7 +25,7 @@ public enum RespVarEnum {
     T_TIME_NO_QUEUE(11);
     
     public final int value;
-    public boolean awake; // diz se a variável será ou não medida
+    public boolean awake;
     public String y_axis;
     
     RespVarEnum(int value){
@@ -75,7 +75,7 @@ public enum RespVarEnum {
                 y_axis = "Recommendations per second";
                 break;
                 
-            case T_TIME_W_QUEUE: // o histograma é criado se a variavel de resposta time w queue estiver setada
+            case T_TIME_W_QUEUE:
                 
                 y_axis = "Time (ms)";
                 break;
@@ -136,7 +136,7 @@ public enum RespVarEnum {
                 measure = response_var.throughput(time_list);
                 break;
                 
-            case T_TIME_W_QUEUE: // o histograma é criado se a variavel de resposta time w queue estiver setada
+            case T_TIME_W_QUEUE: 
                 
                  Benchmarker bk = Benchmarker.getInstance();
                 float time = bk.Mean( response_var.getResponseTime() );
