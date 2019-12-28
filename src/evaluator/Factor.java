@@ -62,13 +62,12 @@ public class Factor {
         
     }
 
-    // Fatores Compostos: são vistos pelo sistema como sendo um único fator. Ou seja, são fatores diferentes mas 
-    // tratados como únicos na hora dos resultados da Avaliação de Desempenho
+
     public void compose(Factor f){
         factor = f;
     }
     
-    // até o momento 1 e -1. 
+    //  1; -1. 
     public void setCurrentVariation(int variation){
         
         currentVariation = variation;
@@ -93,10 +92,10 @@ public class Factor {
         logger.writeEntry("Fator: " + f.getFactorType().name());
         
         if(f.getComposedFactor() != null){
-            logger.writeEntry("Composto: ");
+            logger.writeEntry("Composed: ");
             print(f.getComposedFactor(), logger);
         }else{
-            logger.writeEntry("    Fator Composto null\n");
+            logger.writeEntry(" Composed factor is null\n");
         }
         
     }
