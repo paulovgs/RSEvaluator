@@ -37,11 +37,11 @@ public class ContentBased extends Recommender{
               
         gen.setHistoryAverageRating(user);
         
-        // escolhendo os itens candidadtos a serem recomendados(item i), cada um com seu vetor de atributos
+        
         ResultSet itemSet = cbased.getCBCandidatesWithVector(user.getID(), candidates);
-        //vetor de atributos do target user
+        
         ResultSet user_vector = cbased.getUserVector(user.getID());
-        // mapeia o vetor de atributos do usuário
+        
         Map<Integer, Float> user_attr_vector = new HashMap<>();
         
         while(user_vector.next())
@@ -60,7 +60,7 @@ public class ContentBased extends Recommender{
         Map<Integer, Float> deno = new HashMap<>();
         String item_label = gen.getItemIDLabel();
         
-        while (itemSet.next()){ // para cada filme candidato calcula o score e ranqueia 
+        while (itemSet.next()){ 
                
             current_item_id = itemSet.getInt(item_label);
             attr_id = itemSet.getInt("tag_id");
@@ -81,10 +81,10 @@ public class ContentBased extends Recommender{
                     
         for(Entry<Integer, Float> entry : nume.entrySet()){
             
-            den = (float) (Math.sqrt(deno.get(entry.getKey())) * den2); // den2 ja esta com a raiz contabilizada
+            den = (float) (Math.sqrt(deno.get(entry.getKey())) * den2);
             score = (den == 0) ? 0 : MAX_SCALE * entry.getValue()/den;
 
-            if(score > 0) // valores negativos indicam dessimilaridades
+            if(score > 0) // negative values are dissimilarities
                 recommendation_list.put(entry.getKey(), score); 
         }
         
@@ -105,14 +105,13 @@ public class ContentBased extends Recommender{
                                                      :  items.getFloat("non_personalized_score");
             
             if(!recommendation_list.containsKey(item_id) && semi >= PREDICTION_LIMIT) // semi personalized prediction
-                recommendation_list.put(item_id, semi); // insere no final da lista
+                recommendation_list.put(item_id, semi); 
  
         }
         
     }
     
-    // cria user_vector a partir do item_vector existente
-    // é feito com base no historico de itens do usuário
+
     public static void createUserVector()throws SQLException{
         
         GenericSkeleton gen = GenericSkelFactory.getInstance();
@@ -152,7 +151,6 @@ public class ContentBased extends Recommender{
 
             }
 
-            // essa normalização foi mudada por um scale factor global. Acredito que faça mais sentido
             /*float scale_factor = 0; // put into a 0-1 scale
             for(Entry<Integer, Float> entry : user_vector.entrySet()){
                 float val = entry.getValue();
@@ -218,8 +216,8 @@ public class ContentBased extends Recommender{
             
             for(String tag: document){ 
                 
-                // pega um representante e insere a tag id correspondente
-                tag = Tags.findRepresentative(tag, global_tags).replace("'", "''"); //encontra a tag representante
+               
+                tag = Tags.findRepresentative(tag, global_tags).replace("'", "''"); 
                 
                 if(tags.containsKey(tag)){
 
@@ -276,9 +274,8 @@ public class ContentBased extends Recommender{
             
             for(String tag: document){ 
                 
-                tag = Tags.findRepresentative(tag, global_tags).replace("'", "''"); //encontra a tag representante
+                tag = Tags.findRepresentative(tag, global_tags).replace("'", "''"); 
                 double tfidf = TFIDF(tag, documents, document, documents.size());
-                // verifica qual vector space é e se já não foi inserido
                 int id = entry.getKey();
                 /*if(vector_space.equals("item") && !cbased.hasItemAxis(id, tag)){ 
                     cbased.insertItemVector(id, tag, tfidf);
@@ -298,7 +295,6 @@ public class ContentBased extends Recommender{
     }
     
     
-    // procura gênero nos filmes separados por |, cria novas tags e insere em item_vector
     public static void createTagsFromGenres() throws SQLException{
         
         Map<String, Integer> tag_genres = new HashMap<>();
@@ -311,7 +307,6 @@ public class ContentBased extends Recommender{
         
         while(it.next()){
             
-            // faz o split de cada genero e adiciona no mapa
             String[] genres = it.getString("genres").split("\\|");
 
             for(String genre : genres){
@@ -329,7 +324,7 @@ public class ContentBased extends Recommender{
             String genre = entry.getKey();
             int tag_id;
             
-            if( (tag_id = cbased.hasTag(genre)) == NO_RECOMMENDATION){ // se a tag ja estiver inserida retorna seu id
+            if( (tag_id = cbased.hasTag(genre)) == NO_RECOMMENDATION){ 
                 tag_id = cbased.insertTag(genre, entry.getValue());    
             }
             tag_genres_ids.put(genre, tag_id);
@@ -357,7 +352,6 @@ public class ContentBased extends Recommender{
         
     }
     
-    //dado uma lista, verifica se ela possui ao menos uma chave parecida de acordo com o criterio
     public static boolean hasSimilarKey(ArrayList<String> list, String tag){
         
         for(String element : list){    
