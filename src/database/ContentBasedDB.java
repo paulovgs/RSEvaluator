@@ -152,8 +152,6 @@ public class ContentBasedDB extends ContentBasedDBSkeleton{
         
     }
     
-    // o valor baixo de relevance é para tentar mesclar generos com as tags genome, mas priorizando as suas principais tags.
-    // As tags de genero serão mais importantes nos itens que não tiverem nenhuma tag genome
     @Override
     public void insertTagRelevance(int item_id, int tag_id) throws SQLException{
         
