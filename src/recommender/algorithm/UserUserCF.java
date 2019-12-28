@@ -31,14 +31,13 @@ public class UserUserCF extends CollaborativeFiltering{
         
         gen.setHistoryAverageRating(user);
         
-        // escolha da vizinhança U (TOPk). Escolher U usuários dentro de train set mais similares a u 
         uSet = collab.getTopUserNeighbors(testSetToString(), user.getID(), neighborhood);
         
-        if(!uSet.last()) // se não existe vizinhança, não é posível fazer a recomendação
+        if(!uSet.last()) 
                 return null;
         
-        int row_count = uSet.getRow(); // as vezes retorna menos que a vizinhança então foi preciso mudar pra esse valor no for
-        uSet.beforeFirst(); // coloca o cursor na posição correta para começar a iteração
+        int row_count = uSet.getRow(); 
+        uSet.beforeFirst();
         
         vec = new int[neighborhood];
         
@@ -50,8 +49,7 @@ public class UserUserCF extends CollaborativeFiltering{
             user_multimap.put(usr, uSet.getFloat("global_avg_rt"));
         }
                
-        
-        // escolhendo os candidatos e pegando as ratings dadas pelos vizinhos
+       
         neighbors = Arrays.toString(vec).replace('[', '(').replace(']', ')');
         ratingSet = collab.getCandidateItems(neighbors, user.getID(), candidates);
         
@@ -105,7 +103,7 @@ public class UserUserCF extends CollaborativeFiltering{
                                                      :  items.getFloat("non_personalized_score");
             
             if(!recommendation_list.containsKey(item_id) && semi >= PREDICTION_LIMIT) // semi personalized prediction
-                recommendation_list.put(item_id, semi); // insere no final da lista
+                recommendation_list.put(item_id, semi); 
  
         }
         
