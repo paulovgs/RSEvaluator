@@ -42,9 +42,6 @@ public class ResponseVariable {
     
     public ArrayList<Float> getTimeInQueue(){ return time_in_queue; }
     
-    /*
-    * Faz um mapeamento das ratings do test set dos usuários que foram testados como carga de trabalho
-    */
     public void createUserRatingsTable(List<Integer> real_test_set) throws SQLException{
         
         GenericSkeleton gen = GenericSkelFactory.getInstance();
@@ -66,7 +63,7 @@ public class ResponseVariable {
         if(recommendation_table.isEmpty())
                 return NO_RECOMMENDATION;
        
-        for (Integer user_id : real_test_set){ // para cada user que foi testado
+        for (Integer user_id : real_test_set){ 
             
             recommended_list = recommendation_table.row(user_id);
             user_ratings = user_test_ratings.row(user_id);
@@ -109,7 +106,7 @@ public class ResponseVariable {
         for(float v : values)
             sum += v;
         
-        return (n == 0) ? NO_RECOMMENDATION : 1000* n / sum; // inverso da média *1000 para dar em segundos
+        return (n == 0) ? NO_RECOMMENDATION : 1000* n / sum;
         
     }   
     
@@ -124,7 +121,7 @@ public class ResponseVariable {
             recommended_list = recommendation_table.row(user_id);
             user_ratings = user_test_ratings.row(user_id);
             
-            if(!recommended_list.isEmpty()){ // se lista é vazia precision incrementa de 0 mas den2 nao incrementa, portanto esse zero nao entra no calculo
+            if(!recommended_list.isEmpty()){
                 den = recommended_list.size();
                 if(user_ratings.size() > 0)
                     den2++;
@@ -139,12 +136,12 @@ public class ResponseVariable {
                             hit++;
                 }
                          
-                precision += (den != 0) ? hit/den : 0; // se precision for 0 pq hit é 0, den2 incrementa e isso entra no calculo
+                precision += (den != 0) ? hit/den : 0; 
                 
             }
         }
         
-        // den2 = 0 significa que não existe nenhuma lista
+        // den2 = 0 means no list
         return (den2 != 0 ) ? 100 * precision/den2 : NO_RECOMMENDATION;
     }
     
@@ -172,15 +169,13 @@ public class ResponseVariable {
                     if(user_ratings.keySet().contains(item_id) && user_ratings.get(item_id) >= ACCEPTABLE_VALUE)
                             hit++;
                 }
-                
-                // hit = 0 den2 incrementa, portanto contabiliza
-                // rec list = 0; não contabiliza
+
                 recall += (den != 0) ? hit/den : 0;
                 
             }
         }
         
-        // den2 = 0; todas as rec lists vazias
+        // den2 = 0; empty rec lists
         return (den2 != 0 ) ? 100 * recall/den2 : NO_RECOMMENDATION;
     }
             
@@ -214,7 +209,7 @@ public class ResponseVariable {
                 
             }
            
-            // será considerado o cálculo para users que tenham pelo menos 3 hits
+            // we are considering at least 3 hits
             if(DCG.size() >= 3){
 
                 int position = 0;
@@ -234,7 +229,6 @@ public class ResponseVariable {
         
         if(counter > 0) System.out.println("ndcg cter: "+counter);
         
-        // se counter = 0; nenhum user com pelo menos 3 hits alcansado
         return (counter != 0) ? 100 * dcg_acc/counter : NO_RECOMMENDATION;
     }
     
@@ -244,7 +238,7 @@ public class ResponseVariable {
     
     private float perfectDiscountCumulativeGain(LinkedHashMap<Integer, Float> DCG_list){
         
-        LinkedHashMap<Integer, Float> sortedDCG = Utils.sortByValue(DCG_list, false); // lista ordenada em ordem dec
+        LinkedHashMap<Integer, Float> sortedDCG = Utils.sortByValue(DCG_list, false);
         float dcg = 0;
         int position = 0;
         
@@ -257,9 +251,7 @@ public class ResponseVariable {
     }
     
     public float catalogCoverage(Table<Integer, Integer, Float> recommendation_table, int current_workload, int rec_list_length){
-        
-        // o tamanho da rec_table é a soma de todos os itens recomendados para todos os usuarios
-        // se potential items = 0; ou não existe carga ou não existem comprimento > 0. Coverage não pode ser calculada
+
         float potential_items = rec_list_length * current_workload;
         return (potential_items != 0 ) ? 100 * recommendation_table.size() / potential_items : NO_RECOMMENDATION;
 
@@ -267,9 +259,8 @@ public class ResponseVariable {
     
     public float userCoverage(Table<Integer, Integer, Float> recommendation_table, int current_workload){
         
-        ArrayList<Integer> user_list = new ArrayList<>(); // lista de usuarios distintos atendidos
+        ArrayList<Integer> user_list = new ArrayList<>(); 
         
-        // se está na recommendation_table significa que possui ao menos um item recomendado
         for (Cell<Integer, Integer, Float> cell: recommendation_table.cellSet()){
 
             int user = cell.getRowKey();
@@ -330,14 +321,14 @@ public class ResponseVariable {
 
             return true;
 
-        }else if(size == 0){ // é preciso preencher a tabela com todos as response variables
+        }else if(size == 0){ 
 
             for(i = 0; i < rvar_size; i++){
                 rvar_enum[i].setYAxis();
                 evaluation.insertInResponseVariables(rvar_enum[i].value, rvar_enum[i].toString(), rvar_enum[i].y_axis);
             }
             
-        }else{ // existem algumas response variables preenchidas, mas nem todas
+        }else{ 
 
             for(i = 0; i < rvar_size; i++){
                 
