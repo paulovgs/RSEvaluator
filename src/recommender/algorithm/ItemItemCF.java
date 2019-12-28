@@ -27,7 +27,7 @@ public class ItemItemCF extends CollaborativeFiltering{
         
         while (iSet.next()){ 
                
-            item_x = iSet.getInt("item_y"); // sim, é isso mesmo
+            item_x = iSet.getInt("item_y");
             ResultSet jSet = collab.getTopItemNeighbors(user_id, item_x, neighborhood);
             
             while(jSet.next()){
@@ -60,7 +60,7 @@ public class ItemItemCF extends CollaborativeFiltering{
                                                      :  items.getFloat("non_personalized_score");
             
             if(!recommendation_list.containsKey(item_id) && semi >= PREDICTION_LIMIT) // semi personalized prediction
-                recommendation_list.put(item_id, semi); // insere no final da lista
+                recommendation_list.put(item_id, semi); 
  
         }
         
