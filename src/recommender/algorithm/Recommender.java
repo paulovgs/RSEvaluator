@@ -16,7 +16,7 @@ import utils.Utils;
  */
 public abstract class Recommender {
     
-    public static final int NO_RECOMMENDATION = -1; // deve ser um número que não está presente em movie_ids e negavito, ou então muito grande. É usado no rmserror tb
+    public static final int NO_RECOMMENDATION = -1; // must be a negative number and cannot be a valid movie_id
     protected int candidates;
     protected int neighborhood;
     protected int rec_list_length;
@@ -78,11 +78,10 @@ public abstract class Recommender {
         
     }
             
-    public String testSetToString(){ // transforma o test set atual em string no formato sql
+    public String testSetToString(){ 
         
         Benchmarker bcmarker = Benchmarker.getInstance();
         String tset = bcmarker.getTestSet().toString();
-        // se estiver vazia vai ter uma string da forma []. Nesse caso retorna a string vazia ""
         return (tset.length() > 2) ? tset.replace('[', '(').replace(']', ')') : null;
         
     }
