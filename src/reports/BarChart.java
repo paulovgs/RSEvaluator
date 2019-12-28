@@ -52,7 +52,6 @@ public class BarChart extends JFrame{
 
         barChart.setBackgroundPaint( new Color(204, 204, 204) );
         // set up gradient paints for series...
-        // gradiente nao esta funcionando na 1.0; legenda não ta funcionando na 1.19
         GradientPaint gp = new GradientPaint( 0.0f, 0.0f, new Color(0, 255, 255), 0.0f, 0.0f, new Color(0, 153, 153) );
         renderer.setSeriesPaint(0, gp);
         //barChart.getTitle().setPaint(Color.red);
@@ -126,7 +125,7 @@ public class BarChart extends JFrame{
             Evaluation evl = Evaluation.getInstance();
             String id_filter = "";
             
-            if(filter.length != 0){ // filtro para mostrar só alguns ids
+            if(filter.length != 0){ 
                 id_filter = Arrays.toString(filter).replace('[', '(').replace(']', ')');
             }
                        
