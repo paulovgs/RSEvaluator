@@ -40,7 +40,7 @@ import utils.Utils;
 public class FactorInfluence {
     
     private final Benchmarker benchmarker;
-    private final int resp_var_id; // Cada análise de influencia de fatores se refere a uma variavel de resposta
+    private final int resp_var_id; 
     private final String chart_name;
     Map< String, Double > factors_inf = new HashMap<>();
     Map< String, Double > sum_of_squares = new HashMap<>();
@@ -70,8 +70,8 @@ public class FactorInfluence {
         
         Evaluation evaluation = Evaluation.getInstance();
         ResultSet factors = evaluation.getFactors(benchmarker.getEvaluationID());
-        Map<Integer, Factor> fmap = new LinkedHashMap<>(); // a ordem aqui é muito importante para produzir os fatores corretamente
-        Map<Integer, Integer> composed_map = new HashMap<>(); // guarda a informação de composed_factor_id
+        Map<Integer, Factor> fmap = new LinkedHashMap<>(); 
+        Map<Integer, Integer> composed_map = new HashMap<>();
         
         while(factors.next()){
             
@@ -180,7 +180,7 @@ public class FactorInfluence {
         for (String key : keys){
             
             if(key != null){
-                // a ordem dos fatores corresponde a ordem preenchida da lista de factors gerada pelo banco de dados
+
                 factors_inf.put(key, 100 * (sum_of_squares.get("SS"+key))/SST );
                 //System.out.printf(key + ": %.3f %n", factors_inf.get(key));
                 
@@ -218,7 +218,7 @@ public class FactorInfluence {
                 //System.out.print("); ");
                 
                 Double auxi;
-                auxi = factors_inf.get(lbl); // é o que já tem lá
+                auxi = factors_inf.get(lbl);
                 factors_inf.put(lbl, (auxi == null) ?  var * response : auxi + (var * response) );
                 
             }
@@ -262,7 +262,6 @@ public class FactorInfluence {
         plot.setInteriorGap( 0.02f );             
         plot.setNoDataMessage("No data to display");
         
-        // antigo formato da label, antes de custom label generator
 //        plot.setLabelGenerator(new StandardPieSectionLabelGenerator( "{0} = {2}", new DecimalFormat("0.00"), new DecimalFormat("0.00%")) );
         plot.setLegendLabelGenerator(new StandardPieSectionLabelGenerator( "{0} = {2}", new DecimalFormat("0.00"), new DecimalFormat("0.00%")) );
 
