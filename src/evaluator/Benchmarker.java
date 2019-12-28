@@ -48,7 +48,7 @@ public class Benchmarker {
     private int evaluation_id;
     
     public ArrayList<Float> time_list;
-    private Queue< User > arrival_queue; // fila para simular os usuários chegando ao longo do tempo
+    private Queue< User > arrival_queue;
     private List<Factor> factors;
     private ArrayList <Integer> test_set;
     private Map<RespVarEnum, ArrayList> response_map;
@@ -109,26 +109,22 @@ public class Benchmarker {
     
     public ArrayList<Integer> getTestSet(){ return test_set; }
     
-    // nem todos os usuarios de test_set serão usados, somente a quantidade especificada em t_workload
-    // retorna os n primeiros users de test_set, que correspondem à carga de trabalho que será usada
+    // returns the first n users of test_set. They represent the workload that will be used
     public List<Integer> getTestSetFromWorkload(int nof_users){ return test_set.subList(0, nof_users); }
     
     public void setTestSet(Map< Integer,  Collection<Integer> > user_map, int piece, boolean shuffle){
         
-        test_set = (ArrayList <Integer>) user_map.get(piece); // pega uma porção da lista -> k fold
+        test_set = (ArrayList <Integer>) user_map.get(piece); // k fold
         if(shuffle == true)
-            Collections.shuffle(test_set); // randomiza
+            Collections.shuffle(test_set); 
         
     }
     
-    // para posterior split em train e test sets
     public static Map< Integer,  Collection<Integer> > getAllUsers(int split_rate) throws SQLException{
         
         int size = 0, counter = 0, idx = 0;
         Map< Integer,  Collection<Integer> > map = new HashMap<>();
         
-        // assumindo que os primeiros ids são os mais antigos, o split é feito por time
-        //ordenando por id estava tendo uma variação muito grande nos tempos médios de resposta. as primeiras eram grandes e as ultimas pequenas
         GenericSkeleton gen = GenericSkelFactory.getInstance();
         ResultSet rSet = gen.getAllUsersRandom();
         
@@ -145,7 +141,7 @@ public class Benchmarker {
             list.add(rSet.getInt(gen.getUserIDLabel()));
             counter++;
             
-            if(counter % split_rate == 0 || rSet.isLast()){ // armazena nos vectors
+            if(counter % split_rate == 0 || rSet.isLast()){ 
                 map.put(++idx, list);
                 list = new ArrayList<>();
             }
@@ -198,7 +194,7 @@ public class Benchmarker {
     public void pilotExperiment2() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         
         float max_error = 0.14f;
-        float limit = max_error * 0.02f; // limite de segurança de 2%
+        float limit = max_error * 0.02f; // 2% security limit
         int step = 3;
         
         experiment(false);
@@ -256,7 +252,7 @@ public class Benchmarker {
             this.setNumberOfReplicas(4);
             this.experiment(false);
 
-            //this.getFactors().clear(); // limpa os fatores para começar o experimento oficial
+            //this.getFactors().clear(); 
             this.settings(confidence_interval, evaluation_id); // to clear structures
             Config.TIME_RANGE = range_backup;
 
@@ -288,7 +284,7 @@ public class Benchmarker {
             this.setNumberOfReplicas(4);
             this.oneFacMultiLvlExp(false);
 
-            //this.getFactors().clear(); // limpa os fatores para começar o experimento oficial
+            //this.getFactors().clear(); 
             this.settings(confidence_interval, evaluation_id); // to clear structures
             Config.TIME_RANGE = range_backup;
 
@@ -306,11 +302,11 @@ public class Benchmarker {
         
         number_of_experiments = (int) Math.pow(level, factors.size());
         ArrayList<Float> ciamp = new ArrayList<>();
-        ArrayList<Float> st_dev = new ArrayList<>(); // desvio padrão em porcentagem
+        ArrayList<Float> st_dev = new ArrayList<>();
         
         GenericSkeleton gen = GenericSkelFactory.getInstance();
         int total_users = gen.getTotalNOfUsers();
-        ResultSet pop = gen.getItemPopularity(); // para o cálculo da novelty
+        ResultSet pop = gen.getItemPopularity(); // for novelty
         Map<Integer, Integer> item_popularity = new HashMap<>();
         while(pop.next())
             item_popularity.put( pop.getInt( gen.getItemIDLabel() ), pop.getInt("count") );
@@ -347,21 +343,21 @@ public class Benchmarker {
                 Map< Integer,  Collection<Integer> > user_map = getAllUsers(k_fold);
                 int max_size = user_map.get(k_fold).size();
                
-                if(workload > max_size) // compara se a carga de trabalho é maior que a menor porção do bloco de usuários
+                if(workload > max_size) 
                     throw new RuntimeException("Max size of workload is " + max_size);
-                
-                // para cada um dos k number_of_experimentos, fazer number_of_replicas repetições
+               
+                // replicates each one of the k number_of_experiments
                 for(int j = 0; j < number_of_replicas; j++){
                     
                     int max_q = 0;
                     
                     if(official_exp) Utils.printExperiment(j+1, 2);
 
-                    setTestSet(user_map, (j % k_fold)+1 , true); // seta test_set com uma porção da lista para fazer a k-fold
+                    setTestSet(user_map, (j % k_fold)+1 , true); 
                     Table<Integer, Integer, Float> recommendation_table = HashBasedTable.create(); // keys: user_id, movie_id; values: predictions
                     
                     long log_t_start = System.currentTimeMillis();
-                    // simula usuarios chegando em tempos diferentes
+                    // simulates users arriving in different times
                     TimeDist t_dist = new TimeDist(workload, test_set, DIST_TYPE, TIME_RANGE);
                     Thread dist = new Thread( t_dist );
                     ResponseVariable rv = new ResponseVariable();
@@ -371,31 +367,30 @@ public class Benchmarker {
 
                     while( (not_empty = !arrival_queue.isEmpty()) || dist.isAlive()){
 
-                        if(not_empty){ // caso a fila esteja vazia e a thread esteja rodando, o while executa sem fazer nada, esperando por novos users
+                        if(not_empty){
                             
-                            User usr = arrival_queue.peek(); // sempre o primeiro usuário da fila
+                            User usr = arrival_queue.peek(); 
                             rv.addTimeInQueue((float) (System.currentTimeMillis() - usr.getArrivalTime()));
                             
                             double time = System.currentTimeMillis();
                             Map<Integer, Float> recommendation_list;
                             
-                            recommender.setUser(usr); // mudança do recommender; agora teoricamente nao precisa iniciar com um user
-                            
-                            // se não é possivel fazer a recomendação esse valor não deve ser medido nas variáveis de resposta.
+                            recommender.setUser(usr); 
+                          
                            if( ( recommendation_list = recommender.recommend() ) != null){
                                 
                                 double final_time = System.currentTimeMillis();
                                 time_list.add((float) (final_time - time));
-                                rv.addResponseTime((float) (final_time - usr.getArrivalTime())); // antigo time with queue
+                                rv.addResponseTime((float) (final_time - usr.getArrivalTime())); 
                                 
-                                recommendation_list.forEach((item_id, prediction) -> { // preenchendo a tabela user, item, prediction
+                                recommendation_list.forEach((item_id, prediction) -> { // filling the tables user, item and prediction
                                     recommendation_table.put(usr.getID(), item_id, prediction);
                                 });
                             }
                            
                             arrival_queue.poll();
                             int size = arrival_queue.size();
-                            max_q = (size > max_q) ? size : max_q; // maximo tamanho da fila
+                            max_q = (size > max_q) ? size : max_q; 
                             
                         }
 
@@ -405,7 +400,7 @@ public class Benchmarker {
                     /*========= Cálculo das Variáveis de Resposta ======== */
                     List<Integer> test_set_fwkl = getTestSetFromWorkload(workload);
                     //System.out.println("Usuários: " + test_set_fwkl);
-                    rv.createUserRatingsTable( test_set_fwkl ); // cria a tabela das ratings que serão testadas
+                    rv.createUserRatingsTable( test_set_fwkl ); 
                                        
                     float var_resp = NO_RECOMMENDATION;
                     
@@ -415,7 +410,7 @@ public class Benchmarker {
                             
                             var_resp = resp.measure(rv, recommendation_table, test_set_fwkl, workload, rec_list_length, total_users, item_popularity, time_list);
                             if( var_resp != NO_RECOMMENDATION)
-                                   response_map.get(resp).add(var_resp); //adiciona nas filas
+                                   response_map.get(resp).add(var_resp); 
                             
                         }
                     }
@@ -447,7 +442,7 @@ public class Benchmarker {
                         
                         if(resp.value < 3 || resp.value > 6 ){
                         if(!dev.isNaN())
-                            st_dev.add(dev); // desvio padrão em porcentagem
+                            st_dev.add(dev); 
                         }
                             
                         if(official_exp){
@@ -487,13 +482,13 @@ public class Benchmarker {
         
         number_of_experiments = (int) Math.pow(level, factors.size());
         ArrayList<Float> ciamp = new ArrayList<>();
-        ArrayList<Float> st_dev = new ArrayList<>(); // desvio padrão em porcentagem
+        ArrayList<Float> st_dev = new ArrayList<>(); 
         
         GenericSkeleton gen = GenericSkelFactory.getInstance();
         int total_users = gen.getTotalNOfUsers();
         
         
-        ResultSet pop = gen.getItemPopularity(); // para o cálculo da novelty
+        ResultSet pop = gen.getItemPopularity(); // for novelty
         Map<Integer, Integer> item_popularity = new HashMap<>();
         while(pop.next())
             item_popularity.put( pop.getInt( gen.getItemIDLabel() ), pop.getInt("count") );
@@ -533,17 +528,16 @@ public class Benchmarker {
                 Map< Integer,  Collection<Integer> > user_map = getAllUsers(k_fold);
                 int max_size = user_map.get(k_fold).size();
                
-                if(workload > max_size) // compara se a carga de trabalho é maior que a menor porção do bloco de usuários
+                if(workload > max_size) 
                     throw new RuntimeException("Max size of workload is " + max_size);
                 
-                // para cada um dos k number_of_experimentos, fazer number_of_replicas repetições
                 for(int j = 0; j < number_of_replicas; j++){
                     
                     int max_q = 0;
                     
                     if(official_exp) Utils.printExperiment(j+1, 2);
 
-                    setTestSet(user_map, (j % k_fold)+1 , true); // seta test_set com uma porção da lista para fazer a k-fold
+                    setTestSet(user_map, (j % k_fold)+1 , true); 
                     Table<Integer, Integer, Float> recommendation_table = HashBasedTable.create(); // keys: user_id, movie_id; values: predictions
                     
                     long log_t_start = System.currentTimeMillis();
@@ -557,31 +551,30 @@ public class Benchmarker {
 
                     while( (not_empty = !arrival_queue.isEmpty()) || dist.isAlive()){
 
-                        if(not_empty){ // caso a fila esteja vazia e a thread esteja rodando, o while executa sem fazer nada, esperando por novos users
+                        if(not_empty){ 
                             
-                            User usr = arrival_queue.peek(); // sempre o primeiro usuário da fila
+                            User usr = arrival_queue.peek(); 
                             rv.addTimeInQueue((float) (System.currentTimeMillis() - usr.getArrivalTime()));
                             
                             double time = System.currentTimeMillis();
                             Map<Integer, Float> recommendation_list;
                             
-                            recommender.setUser(usr); // mudança do recommender; agora teoricamente nao precisa iniciar com um user
+                            recommender.setUser(usr); 
                             
-                            // se não é possivel fazer a recomendação esse valor não deve ser medido nas variáveis de resposta.
                            if( ( recommendation_list = recommender.recommend() ) != null){
                                 
                                 double final_time = System.currentTimeMillis();
                                 time_list.add((float) (final_time - time));
-                                rv.addResponseTime((float) (final_time - usr.getArrivalTime())); // antigo time with queue
+                                rv.addResponseTime((float) (final_time - usr.getArrivalTime())); 
                                 
-                                recommendation_list.forEach((item_id, prediction) -> { // preenchendo a tabela user, item, prediction
+                                recommendation_list.forEach((item_id, prediction) -> {
                                     recommendation_table.put(usr.getID(), item_id, prediction);
                                 });
                             }
                            
                             arrival_queue.poll();
                             int size = arrival_queue.size();
-                            max_q = (size > max_q) ? size : max_q; // maximo tamanho da fila
+                            max_q = (size > max_q) ? size : max_q; 
                             
                         }
 
@@ -590,7 +583,7 @@ public class Benchmarker {
                     
                     /*========= Cálculo das Variáveis de Resposta ========*/
                     List<Integer> test_set_fwkl = getTestSetFromWorkload(workload);
-                    rv.createUserRatingsTable( test_set_fwkl ); // cria a tabela das ratings que serão testadas
+                    rv.createUserRatingsTable( test_set_fwkl ); 
                                        
                     float var_resp = NO_RECOMMENDATION;
                     
@@ -600,7 +593,7 @@ public class Benchmarker {
                             
                             var_resp = resp.measure(rv, recommendation_table, test_set_fwkl, workload, rec_list_length, total_users, item_popularity, time_list);
                             if( var_resp != NO_RECOMMENDATION)
-                                   response_map.get(resp).add(var_resp); //adiciona nas filas
+                                   response_map.get(resp).add(var_resp); 
                             
                         }
                     }
@@ -625,7 +618,7 @@ public class Benchmarker {
 
                         Float dev = StandardDeviation( Variance(response_map.get(resp)) ) / Mean(response_map.get(resp));
                         if(!dev.isNaN())
-                            st_dev.add(dev); // desvio padrão em porcentagem
+                            st_dev.add(dev); 
                         
                         if(official_exp){
                             
@@ -729,8 +722,8 @@ public class Benchmarker {
     /*=================================================*
     *               Factors Manipulation               *
     *==================================================*/
-    
-    // combinações das diversas possibilidades de fatores
+   
+    // combination for the different possiblities of factors
     public void blend(Integer m){
         
         Byte b = m.byteValue();
@@ -738,7 +731,7 @@ public class Benchmarker {
         
         for(i = top; i >= 0 ; i-- ){
             
-            Factor f = factors.get(top - i); // para fazer order A,B,C. Se quiser o contrário fazer get(i)
+            Factor f = factors.get(top - i); // order A,B,C. get(i) does inverse order 
             
             if( ((b >> i) & 1) == 0 )
                 f.setCurrentVariation(1);
@@ -750,8 +743,6 @@ public class Benchmarker {
 
     }
        
-    // varrer a lista de fatores(inclusive em profundidade), encontrar o primeiro(e deveria ser unico) que corresponde ao tipo especificado
-    // e retornar seu current value(true) ou variation (false)
     public String getCurrent(FactorTypesEnum factor_type, boolean valueOrVariation){
        
         int size = factors.size(), i;
@@ -767,7 +758,6 @@ public class Benchmarker {
             
         }
         
-        //System.err.println("fator nao encontrado");
         return "-10000";
         
     }
@@ -827,7 +817,7 @@ public class Benchmarker {
             evaluation.saveComposedFactor(evaluation_id, f.getFactorType().value, 
                                             f.getValues(0), f.getValues(1), f.getComposedFactor().getFactorType().value);
             
-            saveFactor(f.getComposedFactor()); // ajusta a query e faz recursivo
+            saveFactor(f.getComposedFactor());
             
         }
         
