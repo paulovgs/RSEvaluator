@@ -69,7 +69,7 @@ public abstract class Recommender {
         
         if(alternative_score == true){
             int size = recommendation_list.size();
-            if( size < rec_list_length) // recomendação alternativa
+            if( size < rec_list_length) 
                 alternativeScore(rec_list_length - size, recommendation_list);
             
         }
