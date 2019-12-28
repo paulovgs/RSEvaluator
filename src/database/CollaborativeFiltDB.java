@@ -44,11 +44,7 @@ public class CollaborativeFiltDB extends CollabFiltDBSkeleton{
     public ResultSet getCandidateItems(String neighbors, int user_id, int candidates) throws SQLException{
         
         Statement st = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-        
-        // itens candidatos são retirados dos filmes avaliados pelos vizinhos, limitados a candidates
-        // em outras palavras: candidatos, com as ratings dadas pelos vizinhos, que fazem parte dos filmes avaliados pelos vizinhos
-        // os filmes presentes no histórico do usuário não são levados em consideração
-        
+                
         return st.executeQuery(
             "select "+this.item_id+", "+this.user_id+", rating from ratings where "+this.item_id+" in " +
                 "(select "+this.item_table+"."+this.item_id+" from "+this.item_table+" inner join ratings on "+this.item_table+"."+this.item_id+" = ratings."+this.item_id+" "
