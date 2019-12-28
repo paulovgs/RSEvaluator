@@ -30,7 +30,7 @@ public class TimeDist implements Runnable{
     
     public TimeDist(int number_of_requests, ArrayList <Integer> sliced_list, TimeDistEnum distribution_type, float time_range){
         
-        this.time_range = time_range * 1000; // para que o valor informado seja equivalente a segundos;
+        this.time_range = time_range * 1000; // seconds
         
         this.number_of_requests = number_of_requests;
         this.sliced_list = sliced_list;
@@ -59,18 +59,17 @@ public class TimeDist implements Runnable{
         
         try {
             
-            //preenche fila, de acordo com start time e com os tempos da distribuição
-            double start_time = System.currentTimeMillis(); // pega a hora do inicio da execução dos testes
+            double start_time = System.currentTimeMillis(); 
 
             while(!pre_queue.isEmpty()){
 
                 double time = start_time + pre_queue.get(0).getArrivalTime();
                 double now = System.currentTimeMillis();
 
-                if( time <= now ){ // preenche a fila simulando chegada do usuário
+                if( time <= now ){
                     User user = pre_queue.remove(0);
                     user.setArrivalTime( now );
-                    arrival_queue.offer( user ); // transfere da pré fila para a fila
+                    arrival_queue.offer( user );
                 }
 
                 TimeUnit.MILLISECONDS.sleep((long) 0.5); // delay
@@ -85,7 +84,7 @@ public class TimeDist implements Runnable{
     
     private void allAtOnce(){
         
-        long arrival_time = 0; // todos chegam no tempo 0
+        long arrival_time = 0;
 
         for(int i = 0; i < number_of_requests; i++){
             
@@ -108,7 +107,7 @@ public class TimeDist implements Runnable{
             vaux.add( getGaussian(mean, dp) );
         }
         
-        Collections.sort(vaux); // ordena por menor tempo
+        Collections.sort(vaux);
          
         for(i = 0; i < number_of_requests; i++){
             
