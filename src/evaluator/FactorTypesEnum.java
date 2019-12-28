@@ -6,7 +6,7 @@ import java.sql.SQLException;
 /**
  * @author Paulo
  */
-public enum FactorTypesEnum{ // deve começar de 1 porque 0 indica um SQL null no composed_factor_type
+public enum FactorTypesEnum{
     
     T_CANDIDATES_SIZE(1), 
     T_NEIGHBOORHOOD_SIZE(2),
@@ -24,7 +24,7 @@ public enum FactorTypesEnum{ // deve começar de 1 porque 0 indica um SQL null n
     public void setDefault(String value){ default_value = value; }
     
     
-    public static boolean persistFactorTypes() throws SQLException{ // salva os factor types no banco, caso ainda não existam
+    public static boolean persistFactorTypes() throws SQLException{ 
 
         FactorTypesEnum[] f_types = FactorTypesEnum.values();
         int i;
@@ -38,12 +38,12 @@ public enum FactorTypesEnum{ // deve começar de 1 porque 0 indica um SQL null n
 
             return true;
 
-        }else if(size == 0){ // é preciso preencher a tabela com todos os factor types
+        }else if(size == 0){ 
 
             for(i = 0; i < f_types_size; i++)
                     evaluation.insertInFactorTypes(f_types[i].value, f_types[i].toString());
 
-        }else{ // existem alguns factors preenchidos, mas nem todos
+        }else{
 
             for(i = 0; i < f_types_size; i++){
 
