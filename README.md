@@ -18,7 +18,7 @@
 
 ## Workflow
 
-![](FlowChart.png)
+![](FlowChart2.png)
 
 ## Quickstart Guide
 1. Install PostgreSQL and configure its access in utils.Config.java (look at label "Part 1")
@@ -50,3 +50,15 @@ After completing the experiments, RSE shows the results as graphs. We believe th
   <img src="/ex4.png" width="300" />
  <img src="/ex5.png" width="300" /> 
 </p>
+
+## Class Diagrams
+
+![](RSE_recommender.png)
+
+![](RSE_evaluator.png)
+
+![](rsevaluator_database.png)
+
+![](rsevaluator_reports.png)
+
+![](rsevaluator_utils.png)
