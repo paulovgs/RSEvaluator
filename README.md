@@ -51,18 +51,19 @@ After completing the experiments, RSE shows the results as graphs. We believe th
  <img src="/ex5.png" width="300" /> 
 </p>
 
+## Current Interface
+
+<img src="/Interface.png" width="750"/>
+
 ## Class Diagrams
 
 <img src="/RSE_recommender.png" width="750"/>
 
 <img src="/RSE_evaluator.png" width="750"/>
 
-<img src="/rsevaluator_database.png" width="750"/>
+<img src="/rsevaluator_database.png" width="900"/>
 
 <img src="/rsevaluator_reports.png" width="750"/>
 
 <img src="/rsevaluator_utils.png" width="750"/>
 
-## Current Interface
-
-<img src="/Interface.png" width="750"/>
